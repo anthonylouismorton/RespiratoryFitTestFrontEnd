@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import {
 	TextField,
@@ -11,15 +11,18 @@ import {
 	MenuItem,
 	Box,
 	Typography,
+  ListItemText
 } from '@mui/material';
 
 export default function MaskForm() {
 	const defaultValues = {
     manufactuer: '',
-		maskStyle: ''
+		maskStyle: '',
+    model: ''
 	};
 
 	const [formValues, setFormValues] = useState(defaultValues);
+  const [respiratorList, setRespiratorList] = useState([])
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -40,7 +43,14 @@ export default function MaskForm() {
 		// 	...defaultValues,
 		// });
 	};
-
+  const getRespiratorModels = async () =>{
+    let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)    
+    setRespiratorList(respirators.data)
+  }
+  useEffect(()=> {
+    getRespiratorModels();
+  }, []);
+  console.log(respiratorList)
 	return (
 		<Box>
 			<Paper>
@@ -59,7 +69,11 @@ export default function MaskForm() {
 										label='Manufacturer'
 										onChange={handleChange}
 									>
-										<MenuItem value={'Place Holder'}>Place Holder</MenuItem>
+                    {respiratorList.map((text, index) => (
+                    <MenuItem key={index}>
+                      <ListItemText primary={text.respiratorManufacturer}></ListItemText>
+                    </MenuItem>
+                    ))}
 									</Select>
 								</FormControl>
 							</Grid>
