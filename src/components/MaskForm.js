@@ -11,18 +11,19 @@ import {
 	MenuItem,
 	Box,
 	Typography,
-  ListItemText
+  ListItemText,
+  Autocomplete
 } from '@mui/material';
 
 export default function MaskForm() {
 	const defaultValues = {
-    manufactuer: '',
+    manufactuer: 'none',
 		maskStyle: '',
     model: ''
 	};
 
 	const [formValues, setFormValues] = useState(defaultValues);
-  const [respiratorList, setRespiratorList] = useState([])
+  const [respiratorList, setRespiratorList] = useState([{respiratorManufacturer: 'Avon'}])
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -43,13 +44,21 @@ export default function MaskForm() {
 		// 	...defaultValues,
 		// });
 	};
+
   const getRespiratorModels = async () =>{
-    let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)    
+    let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
     setRespiratorList(respirators.data)
+  };
+
+  const defaultProps = {
+    options: respiratorList,
+    getOptionLabel: (option) => option.respiratorManufacturer ? option.respiratorManufacturer: ''
   }
+  console.log(defaultProps)
   useEffect(()=> {
     getRespiratorModels();
   }, []);
+  
   console.log(respiratorList)
 	return (
 		<Box>
@@ -59,30 +68,27 @@ export default function MaskForm() {
 					<form onSubmit={onSubmit}>
 						<Grid>
 							<Grid item>
-								<FormControl fullWidth>
-									<InputLabel id='demo-simple-select-label'>
-										Manufacturer
-									</InputLabel>
-									<Select
-										name='manufactuer'
-										value={formValues.manufactuer}
-										label='Manufacturer'
-										onChange={handleChange}
-									>
-                    {respiratorList.map((text, index) => (
-                    <MenuItem key={index}>
-                      <ListItemText primary={text.respiratorManufacturer}></ListItemText>
-                    </MenuItem>
-                    ))}
-									</Select>
-								</FormControl>
+                <FormControl fullWidth>
+                  <Autocomplete
+                    {...defaultProps}
+                    inputValue={formValues.manufactuer}
+                    onChange={(e, newValue) => {
+                      setFormValues({manufacturer: newValue});
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Manufacturer"
+                      />
+                    )}
+                  />
+                </FormControl>
 							</Grid>
 						</Grid>
 						<Grid>
 							<Grid item>
 								<TextField
-									name='Model'
-									value={formValues.model}
+									name='model'
 									id='outlined-multiline-static'
 									label='Model'
 									rows={1}
@@ -97,7 +103,7 @@ export default function MaskForm() {
 										Style
 									</InputLabel>
 									<Select
-										name='maskstyle'
+										name='maskStyle'
 										value={formValues.maskStyle}
 										label='Mask Style'
 										onChange={handleChange}
