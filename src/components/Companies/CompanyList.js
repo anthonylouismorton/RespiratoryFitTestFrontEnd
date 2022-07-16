@@ -325,7 +325,7 @@ export default function CompanyList(props) {
   useEffect(()=> {
     getAllCompanies();
   }, []);
-  console.log(rows)
+  
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>

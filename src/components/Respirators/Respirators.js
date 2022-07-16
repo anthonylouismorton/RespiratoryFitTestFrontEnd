@@ -22,7 +22,7 @@ return (
 		}
 	</Stack>
 	{hideMaskEdit === true && hideMaskForm === true &&
-	<RespiratorList selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
+		<RespiratorList selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
 	}
 	{hideMaskForm === false &&
 		<RespiratorForm hideMaskForm={hideMaskForm} setHideMaskForm={setHideMaskForm}/>
