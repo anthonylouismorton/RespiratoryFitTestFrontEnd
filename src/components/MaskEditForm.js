@@ -16,16 +16,18 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function MaskForm(props) {
 	const filter = createFilterOptions();
-
+  console.log(props)
 	const [formValues, setFormValues] = useState({
-    respiratorManufacturer: '',
-		respiratorStyleID: '',
-    respiratorModelNumber: ''
+    respiratorID: props.selectedMask.respiratorID,
+    respiratorManufacturer: props.selectedMask.respiratorManufacturer,
+		respiratorStyleID: props.selectedMask.respiratorStyleID,
+    respiratorModelNumber: props.selectedMask.respiratorModelNumber
 	});
 
   const [respiratorList, setRespiratorList] = useState([])
 
 	const handleChange = (e) => {
+    console.log(e.target)
 		const { name, value } = e.target;
 		setFormValues({
 			...formValues,
@@ -35,32 +37,43 @@ export default function MaskForm(props) {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await axios.post(
-			`${process.env.REACT_APP_DATABASE}/respirator`,
+		await axios.put(
+			`${process.env.REACT_APP_DATABASE}/respirator/${formValues.respiratorID}`,
 			formValues,
 		);
-
+      
 		setFormValues({
+      respiratorID: '',
 			respiratorManufacturer: '',
 			respiratorStyleID: '',
 			respiratorModelNumber: ''
 		});
-		props.setHideMaskForm(true)
+		props.setHideMaskEdit(true)
 	};
 
-  const getRespiratorModels = async () =>{
+  const handleCancel = () => {
+    props.setHideMaskEdit(true)
+    setFormValues({
+      respiratorID: '',
+			respiratorManufacturer: '',
+			respiratorStyleID: '',
+			respiratorModelNumber: ''
+		});
+  };
+
+  const getRespiratorManufacturers = async () =>{
     let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
     setRespiratorList(respirators.data)
   };
 
   useEffect(()=> {
-    getRespiratorModels();
+    getRespiratorManufacturers();
   }, []);
-  console.log(props.selectedMask)
+  console.log(formValues)
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Mask</Typography>
+				<Typography>Edit Mask</Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
 						<Grid>
@@ -139,6 +152,7 @@ export default function MaskForm(props) {
 							<Grid item>
 								<TextField
 									name='respiratorModelNumber'
+                  defaultValue={props.selectedMask.respiratorModelNumber}
 									id='outlined-multiline-static'
 									label='Model'
 									rows={1}
@@ -168,7 +182,10 @@ export default function MaskForm(props) {
 						</Grid>
 						<Grid item>
 							<Button type='submit' color='success' variant='contained'>
-								Add Mask
+								Submit
+							</Button>
+              <Button onClick={handleCancel} color='error' variant='contained'>
+								Cancel
 							</Button>
 						</Grid>
 					</form>
