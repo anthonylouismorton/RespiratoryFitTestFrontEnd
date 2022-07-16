@@ -6,16 +6,11 @@ import {
 	Paper,
 	Grid,
 	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
 	Box,
 	Typography,
 } from '@mui/material';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function AddCompanyForm(props) {
-	const filter = createFilterOptions();
 
 	const [formValues, setFormValues] = useState({
     address1: '',
@@ -81,14 +76,14 @@ export default function AddCompanyForm(props) {
 		props.setHideAddCompanyForm(true);
 	};
 
-  const getRespiratorModels = async () =>{
-    // let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
-    // setRespiratorList(respirators.data)
-  };
+  // const getRespiratorModels = async () =>{
+  //   let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
+  //   setRespiratorList(respirators.data)
+  // };
 
-  useEffect(()=> {
-    getRespiratorModels();
-  }, []);
+  // useEffect(()=> {
+  //   getRespiratorModels();
+  // }, []);
   console.log(formValues)
 	return (
 		<Box>

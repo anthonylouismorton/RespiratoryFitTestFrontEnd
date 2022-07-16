@@ -57,28 +57,52 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'respiratorManufacturer',
+    id: 'companyName',
     numeric: false,
     disablePadding: true,
-    label: 'Manufacturer',
+    label: 'Company Name',
   },
   {
-    id: 'respiratorModelNumber',
+    id: 'address1',
     numeric: false,
     disablePadding: false,
-    label: 'Model',
+    label: 'Address 1',
   },
   {
-    id: 'respiratorStyleName',
+    id: 'city',
     numeric: false,
     disablePadding: false,
-    label: 'Style',
+    label: 'City',
   },
   {
-    id: 'respiratorStyleFitFactor',
-    numeric: true,
+    id: 'state',
+    numeric: false,
     disablePadding: false,
-    label: 'Fit Factor',
+    label: 'State',
+  },
+  {
+    id: 'zip',
+    numeric: false,
+    disablePadding: false,
+    label: 'Zip Code',
+  },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: 'Email',
+  },
+  {
+    id: 'phoneNumber',
+    numeric: false,
+    disablePadding: false,
+    label: 'Phone Number',
+  },
+  {
+    id: 'ext',
+    numeric: false,
+    disablePadding: false,
+    label: 'Phone Ext',
   },
   {
     id: 'edit',
@@ -181,7 +205,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Respirators
+          Companies
         </Typography>
       )}
 
@@ -207,7 +231,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
-export default function RespiratorList(props) {
+export default function CompanyList(props) {
   const [rows, setRows] = useState([])
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
@@ -258,16 +282,15 @@ export default function RespiratorList(props) {
   };
 
   const handleEdit = (row) => {
-    console.log(row)
-    props.setHideMaskEdit(false)
-    props.setSelectedMask(row)
+    props.setHideCompanyEdit(false)
+    props.setSelectedCompany(row)
 
   };
 
   const handleDeleteClick = async (id) => {
-    await axios.delete(`${process.env.REACT_APP_DATABASE}/respirator/${id}`);
+    await axios.delete(`${process.env.REACT_APP_DATABASE}/company/${id}`);
     setShowDeleteWarning(!showDeleteWarning, null)
-    getAllRespirators();
+    getAllCompanies();
 
   }
 
@@ -294,15 +317,15 @@ export default function RespiratorList(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   
-  const getAllRespirators = async () =>{
-    let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respirator`)
-    setRows(respirators.data)
+  const getAllCompanies = async () =>{
+    let companies = await axios.get(`${process.env.REACT_APP_DATABASE}/company`)
+    setRows(companies.data)
   };
   
   useEffect(()=> {
-    getAllRespirators();
+    getAllCompanies();
   }, []);
-
+  console.log(rows)
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -327,7 +350,7 @@ export default function RespiratorList(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.respiratorID);
+                  const isItemSelected = isSelected(row.companyID);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -336,12 +359,12 @@ export default function RespiratorList(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.respiratorID}
+                      key={row.companyID}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                          onClick={(event) => handleClick(event, row.respiratorID)}
+                          onClick={(event) => handleClick(event, row.companyID)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -357,20 +380,24 @@ export default function RespiratorList(props) {
                       >
                         {row.name}
                       </TableCell> */}
-                      <TableCell align="left">{row.respiratorManufacturer}</TableCell>
-                      <TableCell align="left">{row.respiratorModelNumber}</TableCell>
-                      <TableCell align="left">{row.respiratorStyleName}</TableCell>
-                      <TableCell align="left">{parseInt(row.respiratorStyleFitFactor)}</TableCell>
+                      <TableCell align="left">{row.companyName}</TableCell>
+                      <TableCell align="left">{row.address1}</TableCell>
+                      <TableCell align="left">{row.city}</TableCell>
+                      <TableCell align="left">{row.state}</TableCell>
+                      <TableCell align="left">{row.zip}</TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="left">{row.phoneNumber}</TableCell>
+                      <TableCell align="left">{row.ext}</TableCell>
                       <TableCell aligh="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
                       <TableCell aligh="left">
-                        {showDeleteWarning[0] === false && showDeleteWarning[1] === row.respiratorID ?
+                        {showDeleteWarning[0] === false && showDeleteWarning[1] === row.companyID ?
                         <>
                         <span>Are you sure?</span>
-                        <Button variant="contained" color="success" onClick={() => handleDeleteClick(row.respiratorID)}> Yes </Button>
+                        <Button variant="contained" color="success" onClick={() => handleDeleteClick(row.companyID)}> Yes </Button>
                         <Button variant="contained"  color="error" onClick={handleDeleteWarning}>No</Button>
                         </>
                         :
-                        <DeleteIcon onClick={() => handleDeleteWarning(row.respiratorID)}/>
+                        <DeleteIcon onClick={() => handleDeleteWarning(row.companyID)}/>
                         }
                       </TableCell>
                     </TableRow>
