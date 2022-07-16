@@ -81,7 +81,6 @@ export default function Dashboard() {
   };
 
   const handleDrawerClick = (text) => {
-      console.log(text)
     setPage(text)
   }
 
