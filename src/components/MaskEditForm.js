@@ -15,7 +15,6 @@ import {
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function MaskForm(props) {
-	console.log(props)
 	const filter = createFilterOptions();
 
 	const [formValues, setFormValues] = useState({
@@ -57,7 +56,7 @@ export default function MaskForm(props) {
   useEffect(()=> {
     getRespiratorModels();
   }, []);
-  
+  console.log(props.selectedMask)
 	return (
 		<Box>
 			<Paper>
