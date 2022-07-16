@@ -5,17 +5,21 @@ import MaskForm from './MaskForm'
 import {useState} from 'react'
 
 export default function Masks() {
-	const [hideButton, setHideButton] = useState(false);
+	const [hideMaskForm, setHideMaskForm] = useState(true);
 	const handleClick = () => {
-		setHideButton(true)
+		setHideMaskForm(false)
 	};
 
 return (
 	<>
 	<Stack spacing={2} direction="row">
-		<Button variant="contained">Add New Mask</Button>
+		{hideMaskForm === true &&
+		<Button variant="contained" onClick={handleClick}>Add New Mask</Button>
+		}
 	</Stack>
-	<MaskForm/>
+	{hideMaskForm === false &&
+		<MaskForm hideMaskForm={hideMaskForm} setHideMaskForm={setHideMaskForm}/>
+	}
 	</>
 );
 

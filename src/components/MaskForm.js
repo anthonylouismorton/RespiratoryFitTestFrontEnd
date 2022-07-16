@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
 	TextField,
@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
-export default function MaskForm() {
-
+export default function MaskForm(props) {
+	console.log(props)
 	const filter = createFilterOptions();
 
 	const [formValues, setFormValues] = useState({
@@ -36,7 +36,6 @@ export default function MaskForm() {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		console.log('pow')
 		await axios.post(
 			`${process.env.REACT_APP_DATABASE}/respirator`,
 			formValues,
@@ -47,6 +46,7 @@ export default function MaskForm() {
 			respiratorStyleID: '',
 			respiratorModelNumber: ''
 		});
+		props.setHideMaskForm(true)
 	};
 
   const getRespiratorModels = async () =>{
@@ -134,7 +134,6 @@ export default function MaskForm() {
 											<TextField {...params} label="Manufacturer" />
 										)}
 									/>
-
                 </FormControl>
 							</Grid>
 						</Grid>
