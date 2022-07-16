@@ -11,19 +11,20 @@ import {
 	MenuItem,
 	Box,
 	Typography,
-  ListItemText,
-  Autocomplete
 } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function MaskForm() {
-	const defaultValues = {
-    manufactuer: 'none',
-		maskStyle: '',
-    model: ''
-	};
 
-	const [formValues, setFormValues] = useState(defaultValues);
-  const [respiratorList, setRespiratorList] = useState([{respiratorManufacturer: 'Avon'}])
+	const filter = createFilterOptions();
+
+	const [formValues, setFormValues] = useState({
+    respiratorManufacturer: '',
+		respiratorStyleID: '',
+    respiratorModelNumber: ''
+	});
+
+  const [respiratorList, setRespiratorList] = useState([])
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -35,14 +36,17 @@ export default function MaskForm() {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		// await axios.post(
-		// 	`${process.env.REACT_APP_API}/incident`,
-		// 	formValues,
-		// );
+		console.log('pow')
+		await axios.post(
+			`${process.env.REACT_APP_DATABASE}/respirator`,
+			formValues,
+		);
 
-		// setFormValues({
-		// 	...defaultValues,
-		// });
+		setFormValues({
+			respiratorManufacturer: '',
+			respiratorStyleID: '',
+			respiratorModelNumber: ''
+		});
 	};
 
   const getRespiratorModels = async () =>{
@@ -50,16 +54,11 @@ export default function MaskForm() {
     setRespiratorList(respirators.data)
   };
 
-  const defaultProps = {
-    options: respiratorList,
-    getOptionLabel: (option) => option.respiratorManufacturer ? option.respiratorManufacturer: ''
-  }
-  console.log(defaultProps)
   useEffect(()=> {
     getRespiratorModels();
   }, []);
   
-  console.log(respiratorList)
+  console.log(formValues)
 	return (
 		<Box>
 			<Paper>
@@ -69,26 +68,80 @@ export default function MaskForm() {
 						<Grid>
 							<Grid item>
                 <FormControl fullWidth>
-                  <Autocomplete
-                    {...defaultProps}
-                    inputValue={formValues.manufactuer}
-                    onChange={(e, newValue) => {
-                      setFormValues({manufacturer: newValue});
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Manufacturer"
-                      />
-                    )}
-                  />
+									<Autocomplete
+										value={formValues.respiratorManufacturer}
+										onChange={(event, newValue) => {
+											if(newValue === null){
+												setFormValues({
+													...formValues,
+													respiratorManufacturer: ''
+												});
+											}
+											else if (typeof newValue === 'string') {
+												// Create a new value from the user input
+												setFormValues({
+													...formValues,
+													respiratorManufacturer: newValue
+												});
+											} 
+											else if(newValue.inputValue){
+												setFormValues({
+													...formValues,
+													respiratorManufacturer: newValue.inputValue
+												});
+											}
+											else{
+												setFormValues({
+													...formValues,
+													respiratorManufacturer: newValue.respiratorManufacturer
+												});
+											};
+										}}
+										filterOptions={(options, params) => {
+											const filtered = filter(options, params);
+											const { inputValue } = params;
+											// Suggest the creation of a new value
+											const isExisting = options.some((option) => inputValue === option.title);
+											if (inputValue !== '' && !isExisting) {
+												filtered.push({
+													inputValue,
+													respiratorManufacturer: `Add "${inputValue}"`,
+												});
+											}
+											return filtered;
+										}}
+										selectOnFocus
+										clearOnBlur
+										handleHomeEndKeys
+										id="free-solo-with-text-demo"
+										options={respiratorList}
+										getOptionLabel={(option) => {
+											// Value selected with enter, right from the input
+											if (typeof option === 'string') {
+												return option;
+											}
+											// Add "xxx" option created dynamically
+											if (option.inputValue) {
+												return option.inputValue;
+											}
+											// Regular option
+											return option.respiratorManufacturer;
+										}}
+										renderOption={(props, option) => <li {...props}>{option.respiratorManufacturer}</li>}
+										sx={{ width: 300 }}
+										freeSolo
+										renderInput={(params) => (
+											<TextField {...params} label="Manufacturer" />
+										)}
+									/>
+
                 </FormControl>
 							</Grid>
 						</Grid>
 						<Grid>
 							<Grid item>
 								<TextField
-									name='model'
+									name='respiratorModelNumber'
 									id='outlined-multiline-static'
 									label='Model'
 									rows={1}
@@ -103,15 +156,15 @@ export default function MaskForm() {
 										Style
 									</InputLabel>
 									<Select
-										name='maskStyle'
-										value={formValues.maskStyle}
+										name='respiratorStyleID'
+										value={formValues.respiratorStyleID}
 										label='Mask Style'
 										onChange={handleChange}
 									>
-										<MenuItem value={'Half Mask'}>Half Mask</MenuItem>
-										<MenuItem value={'Quarter Mask'}>Quarter Mask</MenuItem>
-										<MenuItem value={'Full Face Mask'}>Full Face Mask</MenuItem>
-										<MenuItem value={'Gas Mask'}>Gas Mask</MenuItem>
+										<MenuItem value={501}>Half Mask</MenuItem>
+										<MenuItem value={503}>Quarter Mask</MenuItem>
+										<MenuItem value={502}>Full Face Mask</MenuItem>
+										<MenuItem value={500}>Gas Mask</MenuItem>
 									</Select>
 								</FormControl>
 							</Grid>
