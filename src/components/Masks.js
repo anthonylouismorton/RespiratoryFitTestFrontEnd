@@ -13,8 +13,7 @@ export default function Masks() {
 	const handleClick = () => {
 		setHideMaskForm(false)
 	};
-console.log(selectedMask)
-console.log(hideMaskEdit)
+	console.log(hideMaskForm, hideMaskEdit)
 return (
 	<>
 	<Stack spacing={2} direction="row">
@@ -22,7 +21,7 @@ return (
 		<Button variant="contained" onClick={handleClick}>Add New Mask</Button>
 		}
 	</Stack>
-	{hideMaskEdit === true &&
+	{hideMaskEdit === true && hideMaskForm === true &&
 	<MaskList selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
 	}
 	{hideMaskForm === false &&
