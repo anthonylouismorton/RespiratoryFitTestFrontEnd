@@ -232,7 +232,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
-export default function MaskList(props) {
+export default function RespiratorList(props) {
   const [rows, setRows] = useState([])
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');

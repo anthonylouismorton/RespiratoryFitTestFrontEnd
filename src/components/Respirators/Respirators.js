@@ -1,19 +1,19 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import MaskForm from './MaskForm'
-import MaskList from './MaskList'
+import RespiratorForm from './RespiratorForm'
+import RespiratorList from './RespiratorList'
 import {useState} from 'react'
-import MaskEditForm from './MaskEditForm'
+import RespiratorEditForm from './RespiratorEditForm'
 
-export default function Masks() {
+export default function Respirators() {
 	const [hideMaskForm, setHideMaskForm] = useState(true);
 	const [hideMaskEdit, setHideMaskEdit] = useState(true);
 	const [selectedMask, setSelectedMask] = useState([])
 	const handleClick = () => {
 		setHideMaskForm(false)
 	};
-	console.log(hideMaskForm, hideMaskEdit)
+
 return (
 	<>
 	<Stack spacing={2} direction="row">
@@ -22,13 +22,13 @@ return (
 		}
 	</Stack>
 	{hideMaskEdit === true && hideMaskForm === true &&
-	<MaskList selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
+	<RespiratorList selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
 	}
 	{hideMaskForm === false &&
-		<MaskForm hideMaskForm={hideMaskForm} setHideMaskForm={setHideMaskForm}/>
+		<RespiratorForm hideMaskForm={hideMaskForm} setHideMaskForm={setHideMaskForm}/>
 	}
 	{hideMaskEdit === false &&
-		<MaskEditForm selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
+		<RespiratorEditForm selectedMask={selectedMask} setSelectedMask={setSelectedMask} hideMaskEdit={hideMaskEdit} setHideMaskEdit={setHideMaskEdit}/>
 	}
 	</>
 );
