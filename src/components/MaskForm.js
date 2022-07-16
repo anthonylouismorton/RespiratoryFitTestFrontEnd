@@ -15,7 +15,6 @@ import {
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function MaskForm(props) {
-	console.log(props)
 	const filter = createFilterOptions();
 
 	const [formValues, setFormValues] = useState({
@@ -34,6 +33,15 @@ export default function MaskForm(props) {
 		});
 	};
 
+	const handleCancel = () => {
+		setFormValues({
+			respiratorManufacturer: '',
+			respiratorStyleID: '',
+			respiratorModelNumber: ''
+		});
+		props.setHideMaskForm(true);
+  };
+
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		await axios.post(
@@ -46,7 +54,7 @@ export default function MaskForm(props) {
 			respiratorStyleID: '',
 			respiratorModelNumber: ''
 		});
-		props.setHideMaskForm(true)
+		props.setHideMaskForm(true);
 	};
 
   const getRespiratorModels = async () =>{
@@ -170,6 +178,9 @@ export default function MaskForm(props) {
 						<Grid item>
 							<Button type='submit' color='success' variant='contained'>
 								Add Mask
+							</Button>
+							<Button onClick={handleCancel} color='error' variant='contained'>
+								Cancel
 							</Button>
 						</Grid>
 					</form>
