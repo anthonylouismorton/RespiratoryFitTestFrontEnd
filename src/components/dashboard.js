@@ -17,6 +17,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Respirators from './Respirators/Respirators';
 import Companies from './Companies/Companies';
+import Employees from './Employees/Employees';
 
 const drawerWidth = 240;
 
@@ -121,7 +122,7 @@ export default function Dashboard() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['New Fit Test', 'Respirators', 'Companies'].map((text, index) => (
+          {['New Fit Test', 'Respirators', 'Companies', 'Employees'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 {/* <ListItemIcon>
@@ -149,7 +150,8 @@ export default function Dashboard() {
       <Main open={open}>
         <DrawerHeader />
         {page === 'Respirators' && <Respirators/>}
-        {page === 'Companies' && <Companies/>}      
+        {page === 'Companies' && <Companies/>}
+        {page === 'Employees' && <Employees/>}       
       </Main>
     </Box>
   );
