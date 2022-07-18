@@ -18,6 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Respirators from './Respirators/Respirators';
 import Companies from './Companies/Companies';
 import Employees from './Employees/Employees';
+import SearchEmployee from './FitTest/SearchEmployee.js';
 
 const drawerWidth = 240;
 
@@ -80,7 +81,12 @@ export default function Dashboard() {
   };
 
   const handleDrawerClick = (text) => {
-    setPage(text)
+    if(text === 'New Fit Test'){
+      setPage('SearchEmployee')
+    }
+    else{
+      setPage(text)
+    }
   }
 
   return (
@@ -151,7 +157,8 @@ export default function Dashboard() {
         <DrawerHeader />
         {page === 'Respirators' && <Respirators/>}
         {page === 'Companies' && <Companies/>}
-        {page === 'Employees' && <Employees/>}       
+        {page === 'Employees' && <Employees/>}
+        {page === 'SearchEmployee' && <SearchEmployee/>}     
       </Main>
     </Box>
   );
