@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import AddEmployeeForm from './AddEmployeeForm'
-// import EmployeeList from './EmployeeList'
+import EmployeeList from './EmployeeList'
 import {useState} from 'react'
 // import EmployeeEditForm from './EmployeeEditForm'
 
@@ -21,9 +21,9 @@ return (
 		<Button variant="contained" onClick={handleClick}>Add New Employee</Button>
 		}
 	</Stack>
-	{/* {hideEmployeeEdit === true && hideAddEmployeeForm === true &&
+	{hideEmployeeEdit === true && hideAddEmployeeForm === true &&
 		<EmployeeList selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} hideEmployeeEdit={hideEmployeeEdit} setHideEmployeeEdit={setHideEmployeeEdit}/>
-	} */}
+	}
 	{hideAddEmployeeForm === false &&
 		<AddEmployeeForm hideAddEmployeeForm={hideAddEmployeeForm} setHideAddEmployeeForm={setHideAddEmployeeForm}/>
 	}
