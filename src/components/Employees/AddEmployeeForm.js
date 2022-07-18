@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
 	TextField,
 	Button,
@@ -8,25 +11,31 @@ import {
 	FormControl,
 	Box,
 	Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  Stack
 } from '@mui/material';
 
 export default function AddCompanyForm(props) {
-
 	const [formValues, setFormValues] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    dob: '',
+    ssn: '',
     address1: '',
 		address2: '',
     address3: '',
     city: '',
     state: '',
     zip: '',
-    email: '',
-    altEmail: '',
-    phoneNumber: '',
-    ext: '',
-    companyName: ''
+    employeeEmail: '',
+    employeePhoneNumber: '',
+    companyID: ''
 	});
 
-  const [companyNameList, setCompanyNameList] = useState([])
+  const [companyList, setCompanyList] = useState([])
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -36,68 +45,103 @@ export default function AddCompanyForm(props) {
 		});
 	};
 
+  const handleDob = (date) => {
+		setFormValues({
+			...formValues,
+			dob: date,
+		});
+	};
+
 	const handleCancel = () => {
 		setFormValues({
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      dob: '',
+      ssn: '',
       address1: '',
       address2: '',
       address3: '',
       city: '',
       state: '',
       zip: '',
-      email: '',
-      altEmail: '',
-      phoneNumber: '',
-      ext: '',
-      companyName: ''
+      employeeEmail: '',
+      employeePhoneNumber: '',
+      companyID: ''
 		});
-		props.setHideAddCompanyForm(true);
+		props.setHideAddEmployeeForm(true);
   };
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		await axios.post(
-			`${process.env.REACT_APP_DATABASE}/company`,
+			`${process.env.REACT_APP_DATABASE}/employee`,
 			formValues,
 		);
 
 		setFormValues({
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      dob: '',
+      ssn: '',
       address1: '',
       address2: '',
       address3: '',
       city: '',
       state: '',
       zip: '',
-      email: '',
-      altEmail: '',
-      phoneNumber: '',
-      ext: '',
-      companyName: ''
+      employeeEmail: '',
+      employeePhoneNumber: '',
+      companyID: ''
 		});
-		props.setHideAddCompanyForm(true);
+		props.setHideAddEmployeeForm(true);
 	};
 
-  // const getRespiratorModels = async () =>{
-  //   let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
-  //   setRespiratorList(respirators.data)
-  // };
+  const getAllCompanies = async () =>{
+    let companies = await axios.get(`${process.env.REACT_APP_DATABASE}/company`)
+    setCompanyList(companies.data)
+  };
 
-  // useEffect(()=> {
-  //   getRespiratorModels();
-  // }, []);
+  useEffect(()=> {
+    getAllCompanies();
+  }, []);
   console.log(formValues)
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Mask</Typography>
+				<Typography>Add New Employee</Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
             <Grid>
 							<Grid item>
                 <FormControl fullWidth>
                   <TextField
-                    name='companyName'
+                    name='firstName'
                     id='outlined-multiline-static'
-                    label='Company Name'
+                    label='First Name'
+                    rows={1}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+							</Grid>
+              <Grid item>
+                <FormControl fullWidth>
+                  <TextField
+                    name='middleName'
+                    id='outlined-multiline-static'
+                    label='Middle Name'
+                    rows={1}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+							</Grid>
+              <Grid item>
+                <FormControl fullWidth>
+                  <TextField
+                    name='lastName'
+                    id='outlined-multiline-static'
+                    label='Last Name'
                     rows={1}
                     onChange={handleChange}
                   />
@@ -186,32 +230,6 @@ export default function AddCompanyForm(props) {
 							<Grid item>
                 <FormControl fullWidth>
                   <TextField
-                    name='email'
-                    id='outlined-multiline-static'
-                    label='Email'
-                    rows={1}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-							</Grid>
-						</Grid>
-            <Grid>
-							<Grid item>
-                <FormControl fullWidth>
-                  <TextField
-                    name='altEmail'
-                    id='outlined-multiline-static'
-                    label='Alt Email'
-                    rows={1}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-							</Grid>
-						</Grid>
-            <Grid>
-							<Grid item>
-                <FormControl fullWidth>
-                  <TextField
                     name='phoneNumber'
                     id='outlined-multiline-static'
                     label='Phone Number'
@@ -225,13 +243,58 @@ export default function AddCompanyForm(props) {
 							<Grid item>
                 <FormControl fullWidth>
                   <TextField
-                    name='ext'
+                    name='email'
                     id='outlined-multiline-static'
-                    label='Phone Ext'
+                    label='Email'
                     rows={1}
                     onChange={handleChange}
                   />
                 </FormControl>
+							</Grid>
+						</Grid>
+            <Grid>
+							<Grid item>
+                <FormControl fullWidth>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DesktopDatePicker
+                      label="DOB"
+                      inputFormat="MM/dd/yyyy"
+                      value={formValues.dob}
+                      onChange={handleDob}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+							</Grid>
+              <Grid item>
+                <FormControl fullWidth>
+                  <TextField
+                    name='ssn'
+                    id='outlined-multiline-static'
+                    label='SSN'
+                    rows={1}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+							</Grid>
+						</Grid>
+            <Grid>
+							<Grid item>
+								<FormControl fullWidth>
+									<InputLabel id='demo-simple-select-label'>
+										Company
+									</InputLabel>
+									<Select
+										name='companyID'
+										value={formValues.companyID}
+										label='Company'
+										onChange={handleChange}
+									>
+                    {companyList.map((company) => (
+                      <MenuItem key={company.companyID} value={company.companyID}>{company.companyName}</MenuItem>
+                    ))}
+									</Select>
+								</FormControl>
 							</Grid>
 						</Grid>
 						<Grid item>
