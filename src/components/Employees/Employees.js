@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import AddEmployeeForm from './AddEmployeeForm'
 import EmployeeList from './EmployeeList'
 import {useState} from 'react'
-// import EmployeeEditForm from './EmployeeEditForm'
+import EmployeeEditForm from './EmployeeEditForm'
 
 export default function Employees() {
 	const [hideAddEmployeeForm, setHideAddEmployeeForm] = useState(true);
@@ -27,9 +27,9 @@ return (
 	{hideAddEmployeeForm === false &&
 		<AddEmployeeForm hideAddEmployeeForm={hideAddEmployeeForm} setHideAddEmployeeForm={setHideAddEmployeeForm}/>
 	}
-	{/* {hideEmployeeEdit === false &&
+	{hideEmployeeEdit === false &&
 		<EmployeeEditForm selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} hideEmployeeEdit={hideEmployeeEdit} setHideEmployeeEdit={setHideEmployeeEdit}/>
-	} */}
+	}
 	</>
 );
 
