@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
 	TextField,
 	Button,
@@ -11,31 +8,36 @@ import {
 	FormControl,
 	Box,
 	Typography,
-  Select,
-  MenuItem,
   InputLabel,
-  Stack
+  Select,
+  MenuItem
 } from '@mui/material';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-export default function AddCompanyForm(props) {
+export default function EmployeeEditForm(props) {
+
 	const [formValues, setFormValues] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    dob: '',
-    ssn: '',
-    address1: '',
-		address2: '',
-    address3: '',
-    city: '',
-    state: '',
-    zip: '',
-    employeeEmail: '',
-    employeePhoneNumber: '',
-    companyID: ''
+    employeeID: props.selectedEmployee.employeeID,
+    firstName: props.selectedEmployee.firstName,
+    middleName: props.selectedEmployee.middleName,
+    lastName: props.selectedEmployee.lastName,
+    address1: props.selectedEmployee.address1,
+		address2: props.selectedEmployee.address2,
+    address3: props.selectedEmployee.address3,
+    city: props.selectedEmployee.city,
+    state: props.selectedEmployee.state,
+    zip: props.selectedEmployee.zip,
+    email: props.selectedEmployee.employeeEmail,
+    phoneNumber: props.selectedEmployee.employePhoneNumber,
+    dob: props.selectedEmployee.dob,
+    ssn: props.selectedEmployee.ssn,
+    companyName: props.selectedEmployee.companyName,
+    companyID: props.selectedEmployee.companyID
 	});
 
-  const [companyList, setCompanyList] = useState([]);
+  const [companyList, setCompanyList] = useState([])
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -54,48 +56,52 @@ export default function AddCompanyForm(props) {
 
 	const handleCancel = () => {
 		setFormValues({
+      employeeID: '',
       firstName: '',
       middleName: '',
       lastName: '',
-      dob: '',
-      ssn: '',
       address1: '',
       address2: '',
       address3: '',
       city: '',
       state: '',
       zip: '',
-      employeeEmail: '',
-      employeePhoneNumber: '',
+      email: '',
+      phoneNumber: '',
+      dob: '',
+      ssn: '',
+      companyName: '',
       companyID: ''
 		});
-		props.setHideAddEmployeeForm(true);
+		props.setHideEmployeeEdit(true);
   };
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await axios.post(
+		await axios.put(
 			`${process.env.REACT_APP_DATABASE}/employee`,
 			formValues,
 		);
 
 		setFormValues({
+      employeeID: '',
       firstName: '',
       middleName: '',
       lastName: '',
-      dob: '',
-      ssn: '',
       address1: '',
       address2: '',
       address3: '',
       city: '',
       state: '',
       zip: '',
-      employeeEmail: '',
-      employeePhoneNumber: '',
+      email: '',
+      phoneNumber: '',
+      dob: '',
+      ssn: '',
+      companyName: '',
       companyID: ''
 		});
-		props.setHideAddEmployeeForm(true);
+		props.setHideEmployeeEdit(true);
 	};
 
   const getAllCompanies = async () =>{
@@ -106,13 +112,20 @@ export default function AddCompanyForm(props) {
   useEffect(()=> {
     getAllCompanies();
   }, []);
-  console.log(formValues)
+  console.log(props.selectedEmployee)
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Employee</Typography>
+				<Typography>Add New Mask</Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
+						<Grid>
+							<Grid item>
+                <FormControl fullWidth>
+									
+                </FormControl>
+							</Grid>
+						</Grid>
             <Grid>
 							<Grid item>
                 <FormControl fullWidth>
@@ -120,28 +133,35 @@ export default function AddCompanyForm(props) {
                     name='firstName'
                     id='outlined-multiline-static'
                     label='First Name'
+                    defaultValue={props.selectedEmployee.firstName}
                     rows={1}
                     onChange={handleChange}
                   />
                 </FormControl>
 							</Grid>
-              <Grid item>
+						</Grid>
+            <Grid>
+							<Grid item>
                 <FormControl fullWidth>
                   <TextField
                     name='middleName'
                     id='outlined-multiline-static'
                     label='Middle Name'
+                    defaultValue={props.selectedEmployee.middleName}
                     rows={1}
                     onChange={handleChange}
                   />
                 </FormControl>
 							</Grid>
-              <Grid item>
+						</Grid>
+            <Grid>
+							<Grid item>
                 <FormControl fullWidth>
                   <TextField
                     name='lastName'
                     id='outlined-multiline-static'
                     label='Last Name'
+                    defaultValue={props.selectedEmployee.lastName}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -155,6 +175,7 @@ export default function AddCompanyForm(props) {
                     name='address1'
                     id='outlined-multiline-static'
                     label='Address 1'
+                    defaultValue={props.selectedEmployee.address1}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -168,6 +189,7 @@ export default function AddCompanyForm(props) {
                     name='address2'
                     id='outlined-multiline-static'
                     label='Address 2'
+                    defaultValue={props.selectedEmployee.address2}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -181,6 +203,7 @@ export default function AddCompanyForm(props) {
                     name='address3'
                     id='outlined-multiline-static'
                     label='Address 3'
+                    defaultValue={props.selectedEmployee.address3}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -194,6 +217,7 @@ export default function AddCompanyForm(props) {
                     name='city'
                     id='outlined-multiline-static'
                     label='city'
+                    defaultValue={props.selectedEmployee.city}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -207,6 +231,7 @@ export default function AddCompanyForm(props) {
                     name='state'
                     id='outlined-multiline-static'
                     label='State'
+                    defaultValue={props.selectedEmployee.state}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -220,6 +245,7 @@ export default function AddCompanyForm(props) {
                     name='zip'
                     id='outlined-multiline-static'
                     label='Zip Code'
+                    defaultValue={props.selectedEmployee.zip}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -230,22 +256,24 @@ export default function AddCompanyForm(props) {
 							<Grid item>
                 <FormControl fullWidth>
                   <TextField
-                    name='phoneNumber'
-                    id='outlined-multiline-static'
-                    label='Phone Number'
-                    rows={1}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-							</Grid>
-						</Grid>
-            <Grid>
-							<Grid item>
-                <FormControl fullWidth>
-                  <TextField
-                    name='email'
+                    name='employeeEmail'
                     id='outlined-multiline-static'
                     label='Email'
+                    defaultValue={props.selectedEmployee.employeeEmail}
+                    rows={1}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+							</Grid>
+						</Grid>
+            <Grid>
+							<Grid item>
+                <FormControl fullWidth>
+                  <TextField
+                    name='employeePhoneNumber'
+                    id='outlined-multiline-static'
+                    label='Phone Number'
+                    defaultValue={props.selectedEmployee.employeePhoneNumber}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -274,6 +302,7 @@ export default function AddCompanyForm(props) {
                     name='ssn'
                     id='outlined-multiline-static'
                     label='SSN'
+                    defaultValue={props.selectedEmployee.ssn}
                     rows={1}
                     onChange={handleChange}
                   />
@@ -301,7 +330,7 @@ export default function AddCompanyForm(props) {
 						</Grid>
 						<Grid item>
 							<Button type='submit' color='success' variant='contained'>
-								Add Company
+								Submit
 							</Button>
 							<Button onClick={handleCancel} color='error' variant='contained'>
 								Cancel
