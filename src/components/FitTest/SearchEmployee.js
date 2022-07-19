@@ -45,19 +45,26 @@ export default function SearchEmployee(props) {
   };
 
 	const onSubmit = async (e) => {
-		e.preventDefault();
-		await axios.post(
-			`${process.env.REACT_APP_DATABASE}/employee`,
-			formValues,
-		);
+    e.preventDefault();
+    if(formValues.companyID){
+      let companyEmployees = await axios.get(
+        `${process.env.REACT_APP_DATABASE}/companyEmployee/${formValues.companyID}`,
+        formValues,
+      );
+      console.log(companyEmployees.data);
+    };
+		// await axios.post(
+		// 	`${process.env.REACT_APP_DATABASE}/employee`,
+		// 	formValues,
+		// );
 
-		setFormValues({
-      firstName: '',
-      lastName: '',
-      ssn: '',
-      companyID: ''
-		});
-		props.setHideAddEmployeeForm(true);
+		// setFormValues({
+    //   firstName: '',
+    //   lastName: '',
+    //   ssn: '',
+    //   companyID: ''
+		// });
+		// props.setHideAddEmployeeForm(true);
 	};
 
   const getAllCompanies = async () =>{
@@ -72,7 +79,7 @@ export default function SearchEmployee(props) {
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Employee</Typography>
+				<Typography>Search</Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
             <Grid>
@@ -133,7 +140,7 @@ export default function SearchEmployee(props) {
 						</Grid>
 						<Grid item>
 							<Button type='submit' color='success' variant='contained'>
-								Add Company
+								Search
 							</Button>
 							<Button onClick={handleCancel} color='error' variant='contained'>
 								Cancel
