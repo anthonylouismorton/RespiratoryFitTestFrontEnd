@@ -72,7 +72,7 @@ const headCells = [
     id: 'lastName',
     numeric: false,
     disablePadding: true,
-    label: 'Las Name',
+    label: 'Last Name',
   },
   {
     id: 'employeeEmail',
@@ -275,6 +275,7 @@ export default function EmployeeList(props) {
   };
 
   const handleDeleteClick = async (id) => {
+
     await axios.delete(`${process.env.REACT_APP_DATABASE}/employee/${id}`);
     setShowDeleteWarning(!showDeleteWarning, null)
     getAllEmployees();
@@ -408,4 +409,4 @@ export default function EmployeeList(props) {
       />
     </Box>
   );
-}
+};
