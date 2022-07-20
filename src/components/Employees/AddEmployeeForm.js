@@ -14,7 +14,6 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Stack
 } from '@mui/material';
 
 export default function AddCompanyForm(props) {
