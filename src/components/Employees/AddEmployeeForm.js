@@ -311,4 +311,4 @@ export default function AddCompanyForm(props) {
 			</Paper>
 		</Box>
 	);
-}
+};

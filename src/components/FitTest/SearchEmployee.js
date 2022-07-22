@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CompanyEmployeeList from './CompanyEmployeeList';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import QualitativeFitTest from './QualitativeFitTest';
 import {
   Table,
   TableBody,
@@ -22,9 +20,8 @@ import {
   MenuItem,
   InputLabel,
 } from '@mui/material';
-import { set } from 'date-fns';
 
-export default function SearchEmployee(props) {
+export default function SearchEmployee() {
 	const [formValues, setFormValues] = useState({
     firstName: '',
     lastName: '',
@@ -36,6 +33,7 @@ export default function SearchEmployee(props) {
   const [companyEmployeeList, setCompanyEmployeeList] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [hideCompanyEmployeeList, setHideCompanyEmployeeList] = useState(true);
+  const [showEmployeeInformation, setShowEmployeeInformation] = useState(true);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -101,7 +99,7 @@ export default function SearchEmployee(props) {
   }, []);
   console.log(selectedEmployee)
 	return (
-    <>
+    <Box>
     {hideCompanyEmployeeList === true &&
 		<Box>
 			<Paper>
@@ -177,7 +175,7 @@ export default function SearchEmployee(props) {
     {formValues.companyID !== '' && hideCompanyEmployeeList === false &&
     <CompanyEmployeeList companyEmployeeList={companyEmployeeList} setCompanyEmployeeList={setCompanyEmployeeList} selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setHideCompanyEmployeeList={setHideCompanyEmployeeList}/>
     }
-    {formValues.ssn !== '' && hideCompanyEmployeeList === false &&
+    {formValues.ssn !== '' && hideCompanyEmployeeList === false && showEmployeeInformation === true &&
     <>
     <Button variant='contained' onClick={()=> setHideCompanyEmployeeList(true)}>Back</Button>
     <TableContainer component={Paper}>
@@ -189,6 +187,8 @@ export default function SearchEmployee(props) {
             <TableCell align="center">Last Name</TableCell>
             <TableCell align="center">DOB</TableCell>
             <TableCell align="center">SSN</TableCell>
+            <TableCell align="center"> New Fit Test</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
@@ -202,13 +202,21 @@ export default function SearchEmployee(props) {
               <TableCell align="center">{selectedEmployee.lastName}</TableCell>
               <TableCell align="center">{selectedEmployee.dob}</TableCell>
               <TableCell align="center">{selectedEmployee.ssn}</TableCell>
-              <TableCell align="center">{}</TableCell>
+              <TableCell align="center">
+                <Button variant='contained' onClick={()=> setShowEmployeeInformation(false)}>Quantitative</Button>
+                <Button variant='contained' onClick={()=> setShowEmployeeInformation(false)}>Qualitative</Button>
+              </TableCell>
             </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
     </>
     }
+    <>
+    {showEmployeeInformation === false &&
+    <QualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee}/>
+    }
     </>
+  </Box>
 	);
 }
