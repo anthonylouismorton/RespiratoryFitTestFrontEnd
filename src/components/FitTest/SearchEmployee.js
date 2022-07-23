@@ -34,7 +34,7 @@ export default function SearchEmployee() {
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [hideCompanyEmployeeList, setHideCompanyEmployeeList] = useState(true);
   const [showEmployeeInformation, setShowEmployeeInformation] = useState(true);
-  const [respiratorManufacturers, setRespiratorManufacturers] = useState([]);
+  // const [respiratorManufacturers, setRespiratorManufacturers] = useState([]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -94,14 +94,14 @@ export default function SearchEmployee() {
     let companies = await axios.get(`${process.env.REACT_APP_DATABASE}/company`)
     setCompanyList(companies.data)
   };
-  const getRespiratorManufacturers = async () =>{
-    let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
-    setRespiratorManufacturers(respirators.data)
-  };
+  // const getRespiratorManufacturers = async () =>{
+  //   let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
+  //   setRespiratorManufacturers(respirators.data)
+  // };
 
   useEffect(()=> {
     getAllCompanies();
-    getRespiratorManufacturers();
+    // getRespiratorManufacturers();
   }, []);
 
 	return (
@@ -220,7 +220,7 @@ export default function SearchEmployee() {
     }
     <>
     {showEmployeeInformation === false &&
-    <QualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} respiratorManufacturers={respiratorManufacturers} setRespiratorManufacturers={setRespiratorManufacturers}/>
+    <QualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} showEmployeeInformation={showEmployeeInformation} setShowEmployeeInformation={setShowEmployeeInformation}/>
     }
     </>
   </Box>
