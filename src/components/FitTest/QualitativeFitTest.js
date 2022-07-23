@@ -20,7 +20,7 @@ export default function QualitativeFitTest(props) {
   const [formValues, setFormValues] = useState({
     qualitativeTestID: '',
     qualitativeTestType: '',
-    qualitativeTasteThreshold: '',
+    qualitativeTasteThreshold: 10,
     qualitativeTestPass: '',
     qualitativeTestDate: '',
     qualitativeTestTime: '',
@@ -28,32 +28,24 @@ export default function QualitativeFitTest(props) {
     employeeID: props.selectedEmployee.employeeID,
     respiratorID: '',
 	});
+  const [respiratorManufacturers, setRespiratorManufacturers] = useState([]);
+  const [respiratorModels, setRespiratorModels] = useState([]);
+
   const handleChange = (e) => {
 		const { name, value } = e.target;
-    if(name === 'ssn'){
       setFormValues({
-        firstName: '',
-        lastName: '',
-        ssn: value,
-        companyID: ''
+        ...formValues,
+        [name]: value,
       });
-    }
-    else if(name === 'companyID'){
-      console.log('in here')
-      setFormValues({
-        firstName: '',
-        lastName: '',
-        ssn: '',
-        companyID: value
-      });
-    }
 	};
+
   const handleDate = (date) => {
 		setFormValues({
 			...formValues,
 			dob: date,
 		});
 	};
+
   const handleCancel = () => {
 		setFormValues({
       qualitativeTestID: '',
@@ -69,13 +61,17 @@ export default function QualitativeFitTest(props) {
 		props.setHideAddEmployeeForm(true);
   };
 
+  const handleManufacturer = async (manufacturer) => {
+    let models = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorModels`)
+    setRespiratorModels(models);
+  }
+
 	const onSubmit = async (e) => {
     
   };
 
-  useEffect(()=> {
+  console.log(props.respiratorManufacturers)
 
-  }, []);
   return(
   <Box>
     <Paper>
@@ -85,150 +81,11 @@ export default function QualitativeFitTest(props) {
           <Grid>
             <Grid item>
               <FormControl fullWidth>
-                <TextField
-                  name='firstName'
-                  id='outlined-multiline-static'
-                  label='First Name'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='middleName'
-                  id='outlined-multiline-static'
-                  label='Middle Name'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='lastName'
-                  id='outlined-multiline-static'
-                  label='Last Name'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='address1'
-                  id='outlined-multiline-static'
-                  label='Address 1'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='address2'
-                  id='outlined-multiline-static'
-                  label='Address 2'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='address3'
-                  id='outlined-multiline-static'
-                  label='Address 3'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='city'
-                  id='outlined-multiline-static'
-                  label='city'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='state'
-                  id='outlined-multiline-static'
-                  label='State'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='zip'
-                  id='outlined-multiline-static'
-                  label='Zip Code'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='phoneNumber'
-                  id='outlined-multiline-static'
-                  label='Phone Number'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
-                <TextField
-                  name='email'
-                  id='outlined-multiline-static'
-                  label='Email'
-                  rows={1}
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid item>
-              <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
-                    label="DOB"
+                    label="Test Date"
                     inputFormat="MM/dd/yyyy"
-                    value={formValues.dob}
+                    value={formValues.qualitativeTestDate}
                     onChange={handleDate}
                     renderInput={(params) => <TextField {...params} />}
                   />
@@ -239,13 +96,15 @@ export default function QualitativeFitTest(props) {
           <Grid>
             <Grid item>
               <FormControl fullWidth>
-                <TextField
-                  name='ssn'
-                  id='outlined-multiline-static'
-                  label='SSN'
-                  rows={1}
-                  onChange={handleChange}
-                />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label="Expiration Date"
+                    inputFormat="MM/dd/yyyy"
+                    value={formValues.qualitativeTestExpiration}
+                    onChange={handleDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
               </FormControl>
             </Grid>
           </Grid>
@@ -253,29 +112,104 @@ export default function QualitativeFitTest(props) {
 							<Grid item>
 								<FormControl fullWidth>
 									<InputLabel id='demo-simple-select-label'>
-										Style
+										Manufacturer
 									</InputLabel>
 									<Select
-										name='respiratorStyleID'
-										value={formValues.respiratorStyleID}
-										label='Mask Style'
-										onChange={handleChange}
+                    value={formValues.respiratorManufacturer}
+										label='Manufacturer'
+										onChange={handleManufacturer}
 									>
-										<MenuItem value={501}>Half Mask</MenuItem>
-										<MenuItem value={503}>Quarter Mask</MenuItem>
-										<MenuItem value={502}>Full Face Mask</MenuItem>
-										<MenuItem value={500}>Gas Mask</MenuItem>
+                    {/* {props.respiratorManufacturers.map((respirator) => {
+                      <MenuItem key={respirator.respiratorManufacturer} value={respirator.respiratorManufacturer}>{respirator.respiratorManufacturer}</MenuItem>
+                    })}; */}
 									</Select>
 								</FormControl>
 							</Grid>
-						</Grid>
-          <Grid item>
-            <Button type='submit' color='success' variant='contained'>
-              Submit
-            </Button>
-            <Button onClick={handleCancel} color='error' variant='contained'>
-              Cancel
-            </Button>
+					</Grid>
+          <Grid>
+							<Grid item>
+								<FormControl fullWidth>
+									<InputLabel id='demo-simple-select-label'>
+										Model
+									</InputLabel>
+									<Select
+										// value={formValues.qualitativeTestType}
+										label='Model'
+										// onChange={handleManufacturer}
+									>
+                    {/* {respiratorModels.map((respirator) => {
+                      <MenuItem value={501}>{respirator.respiratorManufacturer}</MenuItem>
+                    })} */}
+									</Select>
+								</FormControl>
+							</Grid>
+					</Grid>
+          <Grid>
+							<Grid item>
+								<FormControl fullWidth>
+									<InputLabel id='demo-simple-select-label'>
+										Pass
+									</InputLabel>
+									<Select
+										name='qualitativeTestPass'
+										value={formValues.qualitativeTestPass}
+										label='Pass'
+										onChange={handleChange}
+									>
+										<MenuItem value={true}>Yes</MenuItem>
+										<MenuItem value={false}>No</MenuItem>
+									</Select>
+								</FormControl>
+							</Grid>
+					</Grid>
+          <Grid>
+							<Grid item>
+								<FormControl fullWidth>
+									<InputLabel id='demo-simple-select-label'>
+										Protocol
+									</InputLabel>
+									<Select
+										name='qualitativeTestType'
+										value={formValues.qualitativeTestType}
+										label='Protocol'
+										onChange={handleChange}
+									>
+										<MenuItem value={'Isiamyl Acetate Protocol'}>Isiamyl Acetate Protocol</MenuItem>
+										<MenuItem value={'Saccharin Solution Aerosol Protocol'}>Saccharin Solution Aerosol Protocol</MenuItem>
+										<MenuItem value={'Bitrex (Denatonium Benzoate) Solution Aerosol Protocol'}>Bitrex (Denatonium Benzoate) Solution Aerosol Protocol</MenuItem>
+										<MenuItem value={'Irritant (Smoke Stannic Chloride) Protocol'}>Irritant (Smoke Stannic Chloride) Protocol</MenuItem>
+									</Select>
+								</FormControl>
+							</Grid>
+					</Grid>
+          <Grid>
+							<Grid item>
+								<FormControl fullWidth>
+									<InputLabel id='demo-simple-select-label'>
+										Threshold
+									</InputLabel>
+									<Select
+										name='qualitativeTasteThreshold'
+										value={formValues.qualitativeTasteThreshold}
+										label='Threshold'
+										onChange={handleChange}
+									>
+										<MenuItem value={10}>10</MenuItem>
+										<MenuItem value={20}>20</MenuItem>
+										<MenuItem value={30}>30</MenuItem>
+									</Select>
+								</FormControl>
+							</Grid>
+					</Grid>
+          <Grid>
+            <Grid item>
+              <Button type='submit' color='success' variant='contained'>
+                Submit
+              </Button>
+              <Button onClick={handleCancel} color='error' variant='contained'>
+                Cancel
+              </Button>
+            </Grid>
           </Grid>
         </form>
       </Grid>

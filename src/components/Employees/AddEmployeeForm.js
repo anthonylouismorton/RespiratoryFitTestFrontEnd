@@ -293,7 +293,7 @@ export default function AddCompanyForm(props) {
 									>
                     {companyList.map((company) => (
                       <MenuItem key={company.companyID} value={company.companyID}>{company.companyName}</MenuItem>
-                    ))}
+                    ))};
 									</Select>
 								</FormControl>
 							</Grid>
