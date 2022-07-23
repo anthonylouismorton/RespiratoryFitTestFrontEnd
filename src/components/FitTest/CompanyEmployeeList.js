@@ -19,7 +19,7 @@ export default function CompanyEmployeeList(props) {
 
   useEffect(()=> {
     setRows(props.companyEmployeeList);
-  }, []);
+  }, [props.companyEmployeeList]);
 
   return (
     <>

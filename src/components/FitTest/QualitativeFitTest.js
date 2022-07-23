@@ -20,15 +20,17 @@ export default function QualitativeFitTest(props) {
   const [formValues, setFormValues] = useState({
     qualitativeTestID: '',
     qualitativeTestType: '',
-    qualitativeTasteThreshold: 10,
+    qualitativeTasteThreshold: '10',
     qualitativeTestPass: '',
-    qualitativeTestDate: '',
-    qualitativeTestTime: '',
-		qualitativeTestExpiration: '',
+    qualitativeTestDate: new Date(),
+    qualitativeTestTime: `${new Date().getHours()}${new Date().getMinutes()}`,
+		qualitativeTestExpiration: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
     employeeID: props.selectedEmployee.employeeID,
     respiratorID: '',
 	});
-  const [respiratorManufacturers, setRespiratorManufacturers] = useState([]);
+  const [selectedManufacturer, setSelectedManufacturer] = useState('');
+	const [selectedModel, setSelectedModel] = useState('');
+	const [respiratorManufacturers, setRespiratorManufacturers] = useState([]);
   const [respiratorModels, setRespiratorModels] = useState([]);
 
   const handleChange = (e) => {
@@ -39,10 +41,26 @@ export default function QualitativeFitTest(props) {
       });
 	};
 
-  const handleDate = (date) => {
+	const handleModel = (e) => {
+			setSelectedModel(e.target.value)
+			setFormValues({
+        ...formValues,
+        respiratorID: e.target.value,
+      });
+	}
+
+  const handleTestDate = (date) => {
 		setFormValues({
 			...formValues,
-			dob: date,
+			qualitativeTestDate: date,
+		});
+	};
+
+
+	const handleExpirationDate = (date) => {
+		setFormValues({
+			...formValues,
+			qualitativeTestExpiration: date,
 		});
 	};
 
@@ -58,19 +76,47 @@ export default function QualitativeFitTest(props) {
       employeeID: '',
       respiratorID: '',
 		});
-		props.setHideAddEmployeeForm(true);
+		props.setShowEmployeeInformation(true);
   };
 
   const handleManufacturer = async (manufacturer) => {
-    let models = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorModels`)
-    setRespiratorModels(models);
-  }
-
-	const onSubmit = async (e) => {
-    
+		setSelectedManufacturer(manufacturer.target.value)
+		setSelectedModel('')
+    let models = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorModels/${manufacturer.target.value}`)
+    setRespiratorModels(models.data);
   };
 
-  console.log(props.respiratorManufacturers)
+	const getRespiratorManufacturers = async () =>{
+    let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
+    setRespiratorManufacturers(respirators.data)
+  };
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		let postDate = await axios.post(
+			`${process.env.REACT_APP_DATABASE}/qualitativeFitTest`,
+			formValues,
+		);
+		console.log(postDate)
+		setFormValues({
+      qualitativeTestID: '',
+      qualitativeTestType: '',
+      qualitativeTasteThreshold: '',
+      qualitativeTestPass: '',
+      qualitativeTestDate: '',
+      qualitativeTestTime: '',
+      qualitativeTestExpiration: '',
+      employeeID: '',
+      respiratorID: '',
+		});
+		props.setShowEmployeeInformation(true);
+  };
+
+  useEffect(()=> {
+    getRespiratorManufacturers();
+  }, []);
+
+	console.log(formValues)
 
   return(
   <Box>
@@ -83,10 +129,11 @@ export default function QualitativeFitTest(props) {
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
+										name='testDate'
                     label="Test Date"
                     inputFormat="MM/dd/yyyy"
                     value={formValues.qualitativeTestDate}
-                    onChange={handleDate}
+                    onChange={handleTestDate}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>
@@ -101,13 +148,27 @@ export default function QualitativeFitTest(props) {
                     label="Expiration Date"
                     inputFormat="MM/dd/yyyy"
                     value={formValues.qualitativeTestExpiration}
-                    onChange={handleDate}
+                    onChange={handleExpirationDate}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>
               </FormControl>
             </Grid>
           </Grid>
+					<Grid>
+							<Grid item>
+                <FormControl fullWidth>
+                  <TextField
+                    name='qualitativeTestTime'
+                    id='outlined-multiline-static'
+										value={formValues.qualitativeTestTime}
+                    label='Time'
+                    rows={1}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+							</Grid>
+						</Grid>
           <Grid>
 							<Grid item>
 								<FormControl fullWidth>
@@ -115,13 +176,14 @@ export default function QualitativeFitTest(props) {
 										Manufacturer
 									</InputLabel>
 									<Select
-                    value={formValues.respiratorManufacturer}
+                    value={selectedManufacturer}
+										// defaultValue={respiratorManufacturers[0].respiratorManufacturer}
 										label='Manufacturer'
 										onChange={handleManufacturer}
 									>
-                    {/* {props.respiratorManufacturers.map((respirator) => {
+                    {respiratorManufacturers.map((respirator) => (
                       <MenuItem key={respirator.respiratorManufacturer} value={respirator.respiratorManufacturer}>{respirator.respiratorManufacturer}</MenuItem>
-                    })}; */}
+                    ))};
 									</Select>
 								</FormControl>
 							</Grid>
@@ -133,13 +195,13 @@ export default function QualitativeFitTest(props) {
 										Model
 									</InputLabel>
 									<Select
-										// value={formValues.qualitativeTestType}
+										value={selectedModel}
 										label='Model'
-										// onChange={handleManufacturer}
+										onChange={handleModel}
 									>
-                    {/* {respiratorModels.map((respirator) => {
-                      <MenuItem value={501}>{respirator.respiratorManufacturer}</MenuItem>
-                    })} */}
+                    {respiratorModels.map((model) => (
+                      <MenuItem key={model.respiratorID} value={model.respiratorID}>{model.respiratorModelNumber}</MenuItem>
+                    ))}
 									</Select>
 								</FormControl>
 							</Grid>
@@ -156,8 +218,8 @@ export default function QualitativeFitTest(props) {
 										label='Pass'
 										onChange={handleChange}
 									>
-										<MenuItem value={true}>Yes</MenuItem>
-										<MenuItem value={false}>No</MenuItem>
+										<MenuItem value={1}>Yes</MenuItem>
+										<MenuItem value={0}>No</MenuItem>
 									</Select>
 								</FormControl>
 							</Grid>
@@ -194,9 +256,9 @@ export default function QualitativeFitTest(props) {
 										label='Threshold'
 										onChange={handleChange}
 									>
-										<MenuItem value={10}>10</MenuItem>
-										<MenuItem value={20}>20</MenuItem>
-										<MenuItem value={30}>30</MenuItem>
+										<MenuItem value={'10'}>10</MenuItem>
+										<MenuItem value={'20'}>20</MenuItem>
+										<MenuItem value={'30'}>30</MenuItem>
 									</Select>
 								</FormControl>
 							</Grid>
