@@ -18,23 +18,25 @@ import {
 
 export default function QuantitativeFitTest(props) {
   const [formValues, setFormValues] = useState({
-    quantitativeTestID: '',
-    maskType: '',
-    quantitativeOverallTestPass: '',
-    quantitativeTestDate: new Date(),
-    quantitativeTestTime: `${new Date().getHours()}${new Date().getMinutes()}`,
-		quantitativeTestExpiration: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-    quantitativeTest1FitFactor: '',
-    quantitativeTest2FitFactor: '',
-    quantitativeTest3FitFactor: '',
-    quantitativeTest4FitFactor: '',
-    quantitativeTest5FitFactor: '',
-    quantitativeTest6FitFactor: '',
-    quantitativeTest7FitFactor: '',
-    quantitativeTest8FitFactor: '',
-    quantitativeOverallFitFactor: '',
-    employeeID: props.selectedEmployee.employeeID,
-    respiratorID: '',
+    quantitativeTestID: props.selectedFitTest.quantitativeTestID,
+    maskType: props.selectedFitTest.maskType,
+    quantitativeOverallTestPass: props.selectedFitTest.quantitativeOverallTestPass,
+    quantitativeTestDate: props.selectedFitTest.quantitativeTestDate,
+    quantitativeTestTime: props.selectedFitTest.quantitativeTestTime,
+		quantitativeTestExpiration: props.selectedFitTest.quantitativeTestExpiration,
+    quantitativeTest1FitFactor: props.selectedFitTest.quantitativeTest1FitFactor,
+    quantitativeTest2FitFactor: props.selectedFitTest.quantitativeTest2FitFactor,
+    quantitativeTest3FitFactor: props.selectedFitTest.quantitativeTest3FitFactor,
+    quantitativeTest4FitFactor: props.selectedFitTest.quantitativeTest4FitFactor,
+    quantitativeTest5FitFactor: props.selectedFitTest.quantitativeTest5FitFactor,
+    quantitativeTest6FitFactor: props.selectedFitTest.quantitativeTest6FitFactor,
+    quantitativeTest7FitFactor: props.selectedFitTest.quantitativeTest7FitFactor,
+    quantitativeTest8FitFactor: props.selectedFitTest.quantitativeTest8FitFactor,
+    quantitativeOverallFitFactor: props.selectedFitTest.quantitativeOverallFitFactor,
+    employeeID: props.selectedFitTest.employeeID,
+    respiratorID: props.selectedFitTest.respiratorID,
+    respiratorManufacturer: props.selectedFitTest.respiratorManufacturer,
+    respiratorModelNumber: props.selectedFitTest.respiratorModelNumber
 	});
   const [selectedManufacturer, setSelectedManufacturer] = useState('');
 	const [selectedModel, setSelectedModel] = useState('');
@@ -102,26 +104,8 @@ export default function QuantitativeFitTest(props) {
 	};
 
   const handleCancel = () => {
-		setFormValues({
-      quantitativeTestID: '',
-      maskType: '',
-      quantitativeOverallTestPass: '',
-      quantitativeTestDate: '',
-      quantitativeTestTime: '',
-      quantitativeTestExpiration: '',
-      quantitativeTest1FitFactor: '',
-      quantitativeTest2FitFactor: '',
-      quantitativeTest3FitFactor: '',
-      quantitativeTest4FitFactor: '',
-      quantitativeTest5FitFactor: '',
-      quantitativeTest6FitFactor: '',
-      quantitativeTest7FitFactor: '',
-      quantitativeTest8FitFactor: '',
-      quantitativeOverallFitFactor: '',
-      employeeID: '',
-      respiratorID: '',
-		});
-		props.setShowQuantitativeFitTest(false);
+		setFormValues([]);
+		props.setShowQuantitativeFitTestEdit(false);
   };
 
   const handleManufacturer = async (manufacturer) => {
@@ -138,31 +122,13 @@ export default function QuantitativeFitTest(props) {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await axios.post(
+		await axios.put(
 			`${process.env.REACT_APP_DATABASE}/quantitativeFitTest`,
 			formValues,
 		);
 
-		setFormValues({
-      quantitativeTestID: '',
-      maskType: '',
-      quantitativeOverallTestPass: '',
-      quantitativeTestDate: '',
-      quantitativeTestTime: '',
-      quantitativeTestExpiration: '',
-      quantitativeTest1FitFactor: '',
-      quantitativeTest2FitFactor: '',
-      quantitativeTest3FitFactor: '',
-      quantitativeTest4FitFactor: '',
-      quantitativeTest5FitFactor: '',
-      quantitativeTest6FitFactor: '',
-      quantitativeTest7FitFactor: '',
-      quantitativeTest8FitFactor: '',
-      quantitativeOverallFitFactor: '',
-      employeeID: '',
-      respiratorID: '',
-		});
-		props.setShowQuantitativeFitTest(false);
+		setFormValues([]);
+		props.setShowQuantitativeFitTestEdit(false);
   };
 
   useEffect(()=> {
@@ -190,11 +156,11 @@ export default function QuantitativeFitTest(props) {
     getRespiratorManufacturers();
     
   }, [formValues.quantitativeTest1FitFactor, formValues.quantitativeTest2FitFactor, formValues.quantitativeTest3FitFactor, formValues.quantitativeTest4FitFactor, formValues.quantitativeTest5FitFactor, formValues.quantitativeTest6FitFactor, formValues.quantitativeTest7FitFactor, formValues.quantitativeTest8FitFactor, selectedModel.respiratorStyleID, formValues.quantitativeOverallFitFactor]);
-  
+  console.log(props.selectedFitTest)
   return(
   <Box>
     <Paper>
-      <Typography>New Quantiative Fit Test</Typography>
+      <Typography>Edit Quantiative Fit Test</Typography>
       <Grid>
         <form onSubmit={onSubmit}>
           <Grid>

@@ -112,7 +112,7 @@ export default function EmployeeEditForm(props) {
   useEffect(()=> {
     getAllCompanies();
   }, []);
-  console.log(props.selectedEmployee)
+
 	return (
 		<Box>
 			<Paper>

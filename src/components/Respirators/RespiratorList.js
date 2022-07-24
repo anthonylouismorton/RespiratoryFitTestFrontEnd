@@ -258,7 +258,7 @@ export default function RespiratorList(props) {
   };
 
   const handleEdit = (row) => {
-    console.log(row)
+
     props.setHideMaskEdit(false)
     props.setSelectedMask(row)
 

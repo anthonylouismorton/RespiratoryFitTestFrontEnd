@@ -77,15 +77,6 @@ export default function CompanyEditForm(props) {
 		props.setHideCompanyEdit(true);
 	};
 
-  // const getRespiratorModels = async () =>{
-  //   let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
-  //   setRespiratorList(respirators.data)
-  // };
-
-  // useEffect(()=> {
-  //   getRespiratorModels();
-  // }, []);
-  console.log(props.selectedCompany)
 	return (
 		<Box>
 			<Paper>
