@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CompanyEmployeeList from './CompanyEmployeeList';
 import QualitativeFitTest from './QualitativeFitTest';
+import QuantitativeFitTest from './QuantitativeFitTest';
 import {
   Table,
   TableBody,
@@ -33,8 +34,8 @@ export default function SearchEmployee() {
   const [companyEmployeeList, setCompanyEmployeeList] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [hideCompanyEmployeeList, setHideCompanyEmployeeList] = useState(true);
-  const [showEmployeeInformation, setShowEmployeeInformation] = useState(true);
-  // const [respiratorManufacturers, setRespiratorManufacturers] = useState([]);
+  const [showQuantitativeFitTest, setShowQuantitativeFitTest] = useState(false);
+  const [showQualitativeFitTest, setShowQualitativeFitTest] = useState(false);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -94,14 +95,9 @@ export default function SearchEmployee() {
     let companies = await axios.get(`${process.env.REACT_APP_DATABASE}/company`)
     setCompanyList(companies.data)
   };
-  // const getRespiratorManufacturers = async () =>{
-  //   let respirators = await axios.get(`${process.env.REACT_APP_DATABASE}/respiratorList`)
-  //   setRespiratorManufacturers(respirators.data)
-  // };
 
   useEffect(()=> {
     getAllCompanies();
-    // getRespiratorManufacturers();
   }, []);
 
 	return (
@@ -181,7 +177,7 @@ export default function SearchEmployee() {
     {formValues.companyID !== '' && hideCompanyEmployeeList === false &&
     <CompanyEmployeeList companyEmployeeList={companyEmployeeList} setCompanyEmployeeList={setCompanyEmployeeList} selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setHideCompanyEmployeeList={setHideCompanyEmployeeList}/>
     }
-    {formValues.ssn !== '' && hideCompanyEmployeeList === false && showEmployeeInformation === true &&
+    {formValues.ssn !== '' && hideCompanyEmployeeList === false && !showQualitativeFitTest && !showQuantitativeFitTest &&
     <>
     <Button variant='contained' onClick={()=> setHideCompanyEmployeeList(true)}>Back</Button>
     <TableContainer component={Paper}>
@@ -209,8 +205,8 @@ export default function SearchEmployee() {
               <TableCell align="center">{selectedEmployee.dob}</TableCell>
               <TableCell align="center">{selectedEmployee.ssn}</TableCell>
               <TableCell align="center">
-                <Button variant='contained' onClick={()=> setShowEmployeeInformation(false)}>Quantitative</Button>
-                <Button variant='contained' onClick={()=> setShowEmployeeInformation(false)}>Qualitative</Button>
+                <Button variant='contained' onClick={() => setShowQuantitativeFitTest(true)}>Quantitative</Button>
+                <Button variant='contained' onClick={() => setShowQualitativeFitTest(true)}>Qualitative</Button>
               </TableCell>
             </TableRow>
         </TableBody>
@@ -219,8 +215,11 @@ export default function SearchEmployee() {
     </>
     }
     <>
-    {showEmployeeInformation === false &&
-    <QualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} showEmployeeInformation={showEmployeeInformation} setShowEmployeeInformation={setShowEmployeeInformation}/>
+    {showQualitativeFitTest &&
+    <QualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQualitativeFitTest={setShowQualitativeFitTest}/>
+    }
+    {showQuantitativeFitTest &&
+    <QuantitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQuantitativeFitTest={setShowQuantitativeFitTest}/>
     }
     </>
   </Box>

@@ -76,7 +76,7 @@ export default function QualitativeFitTest(props) {
       employeeID: '',
       respiratorID: '',
 		});
-		props.setShowEmployeeInformation(true);
+		props.setShowQualitativeFitTest(false);
   };
 
   const handleManufacturer = async (manufacturer) => {
@@ -93,11 +93,11 @@ export default function QualitativeFitTest(props) {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		let postDate = await axios.post(
+		await axios.post(
 			`${process.env.REACT_APP_DATABASE}/qualitativeFitTest`,
 			formValues,
 		);
-		console.log(postDate)
+
 		setFormValues({
       qualitativeTestID: '',
       qualitativeTestType: '',
@@ -109,19 +109,17 @@ export default function QualitativeFitTest(props) {
       employeeID: '',
       respiratorID: '',
 		});
-		props.setShowEmployeeInformation(true);
+		props.setShowQualitativeFitTest(false);
   };
 
   useEffect(()=> {
     getRespiratorManufacturers();
   }, []);
 
-	console.log(formValues)
-
   return(
   <Box>
     <Paper>
-      <Typography>Add New Employee</Typography>
+      <Typography>Qualitative Fit Test</Typography>
       <Grid>
         <form onSubmit={onSubmit}>
           <Grid>
