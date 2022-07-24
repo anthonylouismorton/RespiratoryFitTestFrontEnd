@@ -105,7 +105,7 @@ export default function AddCompanyForm(props) {
   useEffect(()=> {
     getAllCompanies();
   }, []);
-  console.log(formValues)
+
 	return (
 		<Box>
 			<Paper>

@@ -22,6 +22,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
+import ArchiveIcon from '@mui/icons-material/Archive';
 import { visuallyHidden } from '@mui/utils';
 import axios from 'axios';
 
@@ -54,55 +55,52 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-// const headCells2 = 
+
 const headCells = [
   {
-    id: 'firstName',
-    numeric: false,
-    disablePadding: true,
-    label: 'First Name',
-  },
-  {
-    id: 'middleName',
-    numeric: false,
-    disablePadding: true,
-    label: 'Middle Name',
-  },
-  {
-    id: 'lastName',
-    numeric: false,
-    disablePadding: true,
-    label: 'Last Name',
-  },
-  {
-    id: 'employeeEmail',
+    id: 'quantitativeTestDate',
     numeric: false,
     disablePadding: false,
-    label: 'Email',
+    label: 'Date',
   },
   {
-    id: 'employeePhoneNumber',
+    id: 'quantitativeTestExpiration',
     numeric: false,
     disablePadding: false,
-    label: 'Phone Number',
+    label: 'Expiration',
   },
   {
-    id: 'companyName',
+    id: 'quantitativeOverallFitFacto',
     numeric: false,
     disablePadding: false,
-    label: 'Company Name',
+    label: 'Overall Fit Factor',
+  },
+  {
+    id: 'respiratorManufacturer',
+    numeric: false,
+    disablePadding: false,
+    label: 'Manufacturer',
+  },
+  {
+    id: 'respiratorModelNumber',
+    numeric: false,
+    disablePadding: false,
+    label: 'Model',
   },
   {
     id: 'edit',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
-    label: 'Edit',
   },
   {
     id: 'delete',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
-    label: 'Delete',
+  },
+  {
+    id: 'archive',
+    numeric: false,
+    disablePadding: false,
   },
 
 ];
@@ -168,57 +166,28 @@ const EnhancedTableToolbar = (props) => {
 
   return (
     <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
+      // sx={{
+      //   pl: { sm: 2 },
+      //   pr: { xs: 1, sm: 1 },
+      //   ...(numSelected > 0 && {
+      //     bgcolor: (theme) =>
+      //       alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+      //   }),
+      // }}
     >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
         <Typography
           sx={{ flex: '1 1 100%' }}
           variant="h6"
           id="tableTitle"
           component="div"
         >
-          Employees
+          Quantitative Fit Tests
         </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
     </Toolbar>
   );
 };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
-export default function EmployeeList(props) {
+export default function QuantitativeFitTestList(props) {
   const [rows, setRows] = useState([])
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
@@ -269,16 +238,14 @@ export default function EmployeeList(props) {
   };
 
   const handleEdit = (row) => {
-    props.setHideEmployeeEdit(false)
-    props.setSelectedEmployee(row)
-
+    props.setSelectedFitTest(row)
+    props.setShowQuantitativeFitTestEdit(true)
   };
 
   const handleDeleteClick = async (id) => {
-
-    await axios.delete(`${process.env.REACT_APP_DATABASE}/employee/${id}`);
+    await axios.delete(`${process.env.REACT_APP_DATABASE}/quantitativeFitTest/${id}`);
     setShowDeleteWarning(!showDeleteWarning, null)
-    getAllEmployees();
+    getAllFitTests()
 
   }
 
@@ -305,13 +272,13 @@ export default function EmployeeList(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   
-  const getAllEmployees = async () =>{
-    let employees = await axios.get(`${process.env.REACT_APP_DATABASE}/employee`)
-    setRows(employees.data)
+  const getAllFitTests = async () =>{
+    let fitTests = await axios.get(`${process.env.REACT_APP_DATABASE}/quantitativeFitTests/${props.selectedEmployee.employeeID}`)
+    setRows(fitTests.data)
   };
   
   useEffect(()=> {
-    getAllEmployees();
+    getAllFitTests();
   }, []);
 
   return (
@@ -338,7 +305,7 @@ export default function EmployeeList(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.employeeID);
+                  const isItemSelected = isSelected(row.quantitativeTestID);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -347,12 +314,12 @@ export default function EmployeeList(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.employeeID}
+                      key={row.quantitativeTestID}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                          onClick={(event) => handleClick(event, row.employeeID)}
+                          onClick={(event) => handleClick(event, row.quantitativeTestID)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -360,24 +327,30 @@ export default function EmployeeList(props) {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="left">{row.firstName}</TableCell>
-                      <TableCell align="left">{row.middleName}</TableCell>
-                      <TableCell align="left">{row.lastName}</TableCell>
-                      <TableCell align="left">{row.employeeEmail}</TableCell>
-                      <TableCell align="left">{row.employeePhoneNumber}</TableCell>
-                      <TableCell align="left">{row.companyName}</TableCell>
-                      <TableCell aligh="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
-                      <TableCell aligh="left">
-                        {showDeleteWarning[0] === false && showDeleteWarning[1] === row.employeeID ?
+                      <TableCell align="left">{row.quantitativeTestDate.substring(0,10)}</TableCell>
+                      <TableCell align="left">{row.quantitativeTestExpiration.substring(0,10)}</TableCell>
+                      <TableCell align="left">{row.quantitativeOverallFitFactor}</TableCell>
+                      <TableCell align="left">{row.respiratorManufacturer}</TableCell>
+                      <TableCell align="left">{row.respiratorModelNumber}</TableCell>
+                      <Tooltip title="Edit">
+                      <TableCell align="center"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
+                      </Tooltip>
+                      <TableCell align="center">
+                        {showDeleteWarning[0] === false && showDeleteWarning[1] === row.quantitativeTestID ?
                         <>
                         <span>Are you sure?</span>
-                        <Button variant="contained" color="success" onClick={() => handleDeleteClick(row.employeeID)}> Yes </Button>
+                        <Button variant="contained" color="success" onClick={() => handleDeleteClick(row.quantitativeTestID)}> Yes </Button>
                         <Button variant="contained"  color="error" onClick={handleDeleteWarning}>No</Button>
                         </>
                         :
-                        <DeleteIcon onClick={() => handleDeleteWarning(row.employeeID)}/>
+                        <Tooltip title="Delete">
+                        <DeleteIcon onClick={() => handleDeleteWarning(row.quantitativeTestID)}/>
+                        </Tooltip>
                         }
                       </TableCell>
+                      <Tooltip title="Archive">
+                      <TableCell aligh="center"><ArchiveIcon/></TableCell>
+                      </Tooltip>
                     </TableRow>
                   );
                 })}
@@ -409,4 +382,4 @@ export default function EmployeeList(props) {
       />
     </Box>
   );
-};
+}

@@ -16,7 +16,6 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function RespiratorEditForm(props) {
 	const filter = createFilterOptions();
-  console.log(props)
 	const [formValues, setFormValues] = useState({
     respiratorID: props.selectedMask.respiratorID,
     respiratorManufacturer: props.selectedMask.respiratorManufacturer,
@@ -27,7 +26,6 @@ export default function RespiratorEditForm(props) {
   const [respiratorList, setRespiratorList] = useState([])
 
 	const handleChange = (e) => {
-    console.log(e.target)
 		const { name, value } = e.target;
 		setFormValues({
 			...formValues,
@@ -69,7 +67,7 @@ export default function RespiratorEditForm(props) {
   useEffect(()=> {
     getRespiratorManufacturers();
   }, []);
-  console.log(formValues)
+	
 	return (
 		<Box>
 			<Paper>
