@@ -234,21 +234,20 @@ export default function QualitativeFitTestList(props) {
   };
 
   const handleDeleteWarning = (id) => {
-    setShowDeleteWarning([!showDeleteWarning, id])
+    setShowDeleteWarning([!showDeleteWarning, id]);
 
   };
 
   const handleEdit = (row) => {
-    props.setSelectedFitTest(row)
-    props.setShowQualitativeFitTestEdit(true)
+    props.setSelectedFitTest(row);
+    props.setShowQualitativeFitTestEdit(true);
   };
 
   const handleDeleteClick = async (id) => {
     await axios.delete(`${process.env.REACT_APP_DATABASE}/qualitativeFitTest/${id}`);
-    setShowDeleteWarning(!showDeleteWarning, null)
-    getAllFitTests()
-
-  }
+    setShowDeleteWarning(!showDeleteWarning, null);
+    getAllFitTests();
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -281,7 +280,7 @@ export default function QualitativeFitTestList(props) {
   useEffect(()=> {
     getAllFitTests();
   });
-  console.log(rows)
+ 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
