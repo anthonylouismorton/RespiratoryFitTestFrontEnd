@@ -15,12 +15,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { visuallyHidden } from '@mui/utils';
@@ -58,22 +56,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'quantitativeTestDate',
+    id: 'qualitativeTestDate',
     numeric: false,
     disablePadding: false,
     label: 'Date',
   },
   {
-    id: 'quantitativeTestExpiration',
+    id: 'qualitativeTestExpiration',
     numeric: false,
     disablePadding: false,
     label: 'Expiration',
   },
   {
-    id: 'quantitativeOverallFitFactor',
+    id: 'qualitativeTestType',
     numeric: false,
     disablePadding: false,
-    label: 'Overall Fit Factor',
+    label: 'Test Type',
+  },
+  {
+    id: 'qualitativeTasteThreshold',
+    numeric: false,
+    disablePadding: false,
+    label: 'Threshold',
   },
   {
     id: 'respiratorManufacturer',
@@ -181,13 +185,13 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Quantitative Fit Tests
+          Qualitative Fit Tests
         </Typography>
     </Toolbar>
   );
 };
 
-export default function QuantitativeFitTestList(props) {
+export default function QualitativeFitTestList(props) {
   const [rows, setRows] = useState([])
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
@@ -239,11 +243,11 @@ export default function QuantitativeFitTestList(props) {
 
   const handleEdit = (row) => {
     props.setSelectedFitTest(row)
-    props.setShowQuantitativeFitTestEdit(true)
+    props.setShowQualitativeFitTestEdit(true)
   };
 
   const handleDeleteClick = async (id) => {
-    await axios.delete(`${process.env.REACT_APP_DATABASE}/quantitativeFitTest/${id}`);
+    await axios.delete(`${process.env.REACT_APP_DATABASE}/qualitativeFitTest/${id}`);
     setShowDeleteWarning(!showDeleteWarning, null)
     getAllFitTests()
 
@@ -273,14 +277,14 @@ export default function QuantitativeFitTestList(props) {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   
   const getAllFitTests = async () =>{
-    let fitTests = await axios.get(`${process.env.REACT_APP_DATABASE}/quantitativeFitTests/${props.selectedEmployee.employeeID}`)
+    let fitTests = await axios.get(`${process.env.REACT_APP_DATABASE}/qualitativeFitTest/${props.selectedEmployee.employeeID}`)
     setRows(fitTests.data)
   };
   
   useEffect(()=> {
     getAllFitTests();
   }, []);
-
+  console.log(rows)
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -305,7 +309,7 @@ export default function QuantitativeFitTestList(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.quantitativeTestID);
+                  const isItemSelected = isSelected(row.qualitativeTestID);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -314,12 +318,12 @@ export default function QuantitativeFitTestList(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.quantitativeTestID}
+                      key={row.qualitativeTestID}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                          onClick={(event) => handleClick(event, row.quantitativeTestID)}
+                          onClick={(event) => handleClick(event, row.qualitativeTestID)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -327,24 +331,25 @@ export default function QuantitativeFitTestList(props) {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="left">{row.quantitativeTestDate.substring(0,10)}</TableCell>
-                      <TableCell align="left">{row.quantitativeTestExpiration.substring(0,10)}</TableCell>
-                      <TableCell align="left">{row.quantitativeOverallFitFactor}</TableCell>
+                      <TableCell align="left">{row.qualitativeTestDate.substring(0,10)}</TableCell>
+                      <TableCell align="left">{row.qualitativeTestExpiration.substring(0,10)}</TableCell>
+                      <TableCell align="left">{row.qualitativeTestType}</TableCell>
+                      <TableCell align="left">{row.qualitativeTasteThreshold}</TableCell>
                       <TableCell align="left">{row.respiratorManufacturer}</TableCell>
-                      <TableCell align="left">{row.respiratorModelNumber}</TableCell>
+                      <TableCell align="left">{row.respiratorModelNumber}</TableCell> 
                       <Tooltip title="Edit">
                       <TableCell align="center"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
                       </Tooltip>
                       <TableCell align="center">
-                        {showDeleteWarning[0] === false && showDeleteWarning[1] === row.quantitativeTestID ?
+                        {showDeleteWarning[0] === false && showDeleteWarning[1] === row.qualitativeTestID ?
                         <>
                         <span>Are you sure?</span>
-                        <Button variant="contained" color="success" onClick={() => handleDeleteClick(row.quantitativeTestID)}> Yes </Button>
+                        <Button variant="contained" color="success" onClick={() => handleDeleteClick(row.qualitativeTestID)}> Yes </Button>
                         <Button variant="contained"  color="error" onClick={handleDeleteWarning}>No</Button>
                         </>
                         :
                         <Tooltip title="Delete">
-                        <DeleteIcon onClick={() => handleDeleteWarning(row.quantitativeTestID)}/>
+                        <DeleteIcon onClick={() => handleDeleteWarning(row.qualitativeTestID)}/>
                         </Tooltip>
                         }
                       </TableCell>

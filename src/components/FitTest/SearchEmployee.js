@@ -4,7 +4,9 @@ import CompanyEmployeeList from './CompanyEmployeeList';
 import QualitativeFitTest from './QualitativeFitTest';
 import QuantitativeFitTest from './QuantitativeFitTest';
 import QuantitativeFitTestList from './QuantitativeFitTestList';
+import QualitativeFitTestList from './QualitativeFitTestList';
 import EditQuantitativeFitTest from './EditQuantitativeFitTest';
+import EditQualitativeFitTest from './EditQualitativeFitTest';
 import {
   Table,
   TableBody,
@@ -39,6 +41,7 @@ export default function SearchEmployee() {
   const [showQuantitativeFitTest, setShowQuantitativeFitTest] = useState(false);
   const [showQualitativeFitTest, setShowQualitativeFitTest] = useState(false);
   const [showQuantitativeFitTestEdit, setShowQuantitativeFitTestEdit] = useState(false);
+  const [showQualitativeFitTestEdit, setShowQualitativeFitTestEdit] = useState(false);
   const [showFitTests, setshowFitTests] = useState(false);
   const [selectedFitTest, setSelectedFitTest] = useState([]);
 
@@ -185,7 +188,7 @@ export default function SearchEmployee() {
     {formValues.companyID !== '' && hideCompanyEmployeeList === false &&
     <CompanyEmployeeList companyEmployeeList={companyEmployeeList} setCompanyEmployeeList={setCompanyEmployeeList} selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setHideCompanyEmployeeList={setHideCompanyEmployeeList}/>
     }
-    {formValues.ssn !== '' && hideCompanyEmployeeList === false && !showQualitativeFitTest && !showQuantitativeFitTest && !showQuantitativeFitTestEdit &&
+    {formValues.ssn !== '' && hideCompanyEmployeeList === false && !showQualitativeFitTest && !showQuantitativeFitTest && !showQuantitativeFitTestEdit && !showQualitativeFitTestEdit &&
     <>
     <Button variant='contained' onClick={()=> setHideCompanyEmployeeList(true)}>Back</Button>
     <TableContainer component={Paper}>
@@ -229,11 +232,17 @@ export default function SearchEmployee() {
     {showQuantitativeFitTest &&
     <QuantitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQuantitativeFitTest={setShowQuantitativeFitTest}/>
     }
-    {showFitTests && !showQuantitativeFitTest && !showQuantitativeFitTestEdit &&
+    {showFitTests && !showQuantitativeFitTest && !showQuantitativeFitTestEdit && !showQualitativeFitTestEdit && !showQualitativeFitTest &&
     <QuantitativeFitTestList selectedEmployee={selectedEmployee} setSelectedFitTest={setSelectedFitTest} selectedFitTest={selectedFitTest} setShowQuantitativeFitTestEdit={setShowQuantitativeFitTestEdit}/>
     }
     {showQuantitativeFitTestEdit &&
     <EditQuantitativeFitTest selectedFitTest={selectedFitTest} setSelectedFitTest={setSelectedFitTest} setShowQuantitativeFitTestEdit={setShowQuantitativeFitTestEdit}/>
+    }
+    {showFitTests && !showQuantitativeFitTest && !showQualitativeFitTest && !showQuantitativeFitTestEdit && !showQualitativeFitTestEdit &&
+    <QualitativeFitTestList selectedEmployee={selectedEmployee} selectedFitTest={selectedFitTest} setSelectedFitTest={setSelectedFitTest} setShowQualitativeFitTestEdit={setShowQualitativeFitTestEdit}/>
+    }
+    {showQualitativeFitTestEdit &&
+    <EditQualitativeFitTest selectedFitTest={selectedFitTest} setSelectedFitTest={setSelectedFitTest} setShowQualitativeFitTestEdit={setShowQualitativeFitTestEdit}/>
     }
     </>
   </Box>
