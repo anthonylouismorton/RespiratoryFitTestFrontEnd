@@ -189,7 +189,7 @@ export default function QuantitativeFitTest(props) {
     };
     getRespiratorManufacturers();
     
-  }, []);
+  });
   
   return(
   <Box>
