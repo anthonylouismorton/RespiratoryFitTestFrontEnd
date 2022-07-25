@@ -47,7 +47,7 @@ export default function QualitativeFitTest(props) {
         ...formValues,
         respiratorID: e.target.value,
       });
-	}
+	};
 
   const handleTestDate = (date) => {
 		setFormValues({

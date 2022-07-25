@@ -160,7 +160,7 @@ export default function QuantitativeFitTest(props) {
   return(
   <Box>
     <Paper>
-      <Typography>Edit Quantiative Fit Test</Typography>
+      <Typography>Edit Quantitative Fit Test</Typography>
       <Grid>
         <form onSubmit={onSubmit}>
           <Grid>
