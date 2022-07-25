@@ -57,13 +57,6 @@ export default function QuantitativeFitTest(props) {
     });
   };
   
-  const calculateFitFactor = () => {
-    
-    let sum = Math.round((parseInt(formValues.quantitativeTest1FitFactor) + parseInt(formValues.quantitativeTest2FitFactor) + parseInt(formValues.quantitativeTest3FitFactor) + parseInt(formValues.quantitativeTest4FitFactor) + parseInt(formValues.quantitativeTest5FitFactor) + parseInt(formValues.quantitativeTest6FitFactor) + parseInt(formValues.quantitativeTest7FitFactor) + parseInt(formValues.quantitativeTest8FitFactor)) / 8)
-    let total = sum.toString();
-    return total;
-  };
-
 	const handleModel = (e) => {
     let respirator = e.target.value.respiratorStyleID
     let maskType = '';
@@ -166,31 +159,34 @@ export default function QuantitativeFitTest(props) {
   };
 
   useEffect(()=> {
+ 
     let total = 0;
     if(formValues.quantitativeTest1FitFactor && formValues.quantitativeTest2FitFactor && formValues.quantitativeTest3FitFactor && formValues.quantitativeTest4FitFactor && formValues.quantitativeTest5FitFactor && formValues.quantitativeTest6FitFactor && formValues.quantitativeTest7FitFactor && formValues.quantitativeTest8FitFactor){
-      total = calculateFitFactor();
+      let sum = Math.round((parseInt(formValues.quantitativeTest1FitFactor) + parseInt(formValues.quantitativeTest2FitFactor) + parseInt(formValues.quantitativeTest3FitFactor) + parseInt(formValues.quantitativeTest4FitFactor) + parseInt(formValues.quantitativeTest5FitFactor) + parseInt(formValues.quantitativeTest6FitFactor) + parseInt(formValues.quantitativeTest7FitFactor) + parseInt(formValues.quantitativeTest8FitFactor)) / 8)
+      total = sum.toString();
+      console.log(total)
     };
 
-    if(selectedModel.respiratorStyleID === 501){
-      if(parseInt(formValues.quantitativeOverallFitFactor) >= 100){
-        setFormValues({
-          ...formValues,
-          quantitativeOverallFitFactor: total,
-          quantitativeOverallTestPass: 1
-        });
-      }
-      else{
-        setFormValues({
-          ...formValues,
-          quantitativeOverallFitFactor: total,
-          quantitativeOverallTestPass: 0
-        });
-      };
-    };
+    // if(selectedModel.respiratorStyleID === 501){
+    //   if(parseInt(formValues.quantitativeOverallFitFactor) >= 100){
+    //     setFormValues({
+    //       ...formValues,
+    //       quantitativeOverallFitFactor: total,
+    //       quantitativeOverallTestPass: 1
+    //     });
+    //   }
+    //   else{
+    //     setFormValues({
+    //       ...formValues,
+    //       quantitativeOverallFitFactor: total,
+    //       quantitativeOverallTestPass: 0
+    //     });
+    //   };
+    // };
     getRespiratorManufacturers();
     
-  });
-  
+  },[formValues.quantitativeTest1FitFactor, formValues.quantitativeTest2FitFactor, formValues.quantitativeTest3FitFactor, formValues.quantitativeTest4FitFactor, formValues.quantitativeTest5FitFactor, formValues.quantitativeTest6FitFactor, formValues.quantitativeTest7FitFactor, formValues.quantitativeTest8FitFactor]);
+  console.log(formValues)
   return(
   <Box>
     <Paper>
