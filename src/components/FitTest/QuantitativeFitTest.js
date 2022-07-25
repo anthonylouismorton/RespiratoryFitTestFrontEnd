@@ -189,7 +189,7 @@ export default function QuantitativeFitTest(props) {
     };
     getRespiratorManufacturers();
     
-  }, [formValues.quantitativeTest1FitFactor, formValues.quantitativeTest2FitFactor, formValues.quantitativeTest3FitFactor, formValues.quantitativeTest4FitFactor, formValues.quantitativeTest5FitFactor, formValues.quantitativeTest6FitFactor, formValues.quantitativeTest7FitFactor, formValues.quantitativeTest8FitFactor, selectedModel.respiratorStyleID, formValues.quantitativeOverallFitFactor]);
+  }, []);
   
   return(
   <Box>

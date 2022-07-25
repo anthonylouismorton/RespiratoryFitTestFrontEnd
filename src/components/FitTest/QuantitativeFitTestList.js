@@ -159,8 +159,6 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
-
   return (
     <Toolbar
       // sx={{
@@ -276,7 +274,7 @@ export default function QuantitativeFitTestList(props) {
   
   useEffect(()=> {
     getAllFitTests();
-  }, []);
+  });
 
   return (
     <Box sx={{ width: '100%' }}>

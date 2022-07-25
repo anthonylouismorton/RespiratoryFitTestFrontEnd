@@ -15,10 +15,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Respirators from './Respirators/Respirators';
-import Companies from './Companies/Companies';
-import Employees from './Employees/Employees';
-import SearchEmployee from './FitTest/SearchEmployee.js';
+import Respirators from './components/Respirators/Respirators';
+import Companies from './components/Companies/Companies';
+import Employees from './components/Employees/Employees';
+import SearchEmployee from './components/FitTest/SearchEmployee.js';
 
 const drawerWidth = 240;
 
