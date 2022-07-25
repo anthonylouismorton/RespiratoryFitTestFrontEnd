@@ -110,7 +110,7 @@ export default function SearchEmployee() {
   useEffect(()=> {
     getAllCompanies();
   }, []);
-
+  // Might want to move Lists from New Fit Test to Employee
 	return (
     <Box>
     {hideCompanyEmployeeList === true &&
