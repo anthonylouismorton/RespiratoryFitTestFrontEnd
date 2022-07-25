@@ -114,7 +114,7 @@ export default function QualitativeFitTest(props) {
 
   useEffect(()=> {
     getRespiratorManufacturers();
-  }, []);
+  });
 
   return(
   <Box>
