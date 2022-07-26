@@ -87,12 +87,6 @@ const headCells = [
     label: 'Phone Number',
   },
   {
-    id: 'companyName',
-    numeric: false,
-    disablePadding: false,
-    label: 'Company Name',
-  },
-  {
     id: 'edit',
     numeric: true,
     disablePadding: false,
@@ -218,7 +212,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EmployeeList(props) {
+export default function CompanyEmployeeList(props) {
   const [rows, setRows] = useState([])
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
@@ -269,8 +263,8 @@ export default function EmployeeList(props) {
   };
 
   const handleEdit = (row) => {
-    props.setHideEmployeeEdit(false)
-    props.setSelectedEmployee(row)
+    // props.setHideEmployeeEdit(false)
+    // props.setSelectedEmployee(row)
 
   };
 
@@ -278,7 +272,7 @@ export default function EmployeeList(props) {
 
     await axios.delete(`${process.env.REACT_APP_DATABASE}/employee/${id}`);
     setShowDeleteWarning(!showDeleteWarning, null)
-    getAllEmployees();
+    getCompanyEmployees();
 
   }
 
@@ -305,15 +299,15 @@ export default function EmployeeList(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   
-  const getAllEmployees = async () =>{
-    let employees = await axios.get(`${process.env.REACT_APP_DATABASE}/employee`)
+  const getCompanyEmployees = async () =>{
+    let employees = await axios.get(`${process.env.REACT_APP_DATABASE}/companyEmployee/${props.selectedCompany.companyID}`)
     setRows(employees.data)
   };
   
   useEffect(()=> {
-    getAllEmployees();
+    getCompanyEmployees();
   }, []);
-
+  console.log(props)
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -365,7 +359,6 @@ export default function EmployeeList(props) {
                       <TableCell align="left">{row.lastName}</TableCell>
                       <TableCell align="left">{row.employeeEmail}</TableCell>
                       <TableCell align="left">{row.employeePhoneNumber}</TableCell>
-                      <TableCell align="left">{row.companyName}</TableCell>
                       <TableCell align="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
                       <TableCell align="left">
                         {showDeleteWarning[0] === false && showDeleteWarning[1] === row.employeeID ?

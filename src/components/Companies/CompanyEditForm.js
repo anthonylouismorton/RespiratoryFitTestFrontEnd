@@ -78,7 +78,7 @@ export default function CompanyEditForm(props) {
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Mask</Typography>
+				<Typography>Edit {props.selectedCompany.companyName}</Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
 						<Grid>

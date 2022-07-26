@@ -37,7 +37,6 @@ export default function EditQualitativeFitTest(props) {
 
   const handleChange = (e) => {
 		const { name, value } = e.target;
-    console.log(name, value)
       setFormValues({
         ...formValues,
         [name]: value,
@@ -46,7 +45,6 @@ export default function EditQualitativeFitTest(props) {
 
 	const handleModel = (e) => {
     setSelectedModel(e.target.value)
-    console.log(e.target.value)
     setFormValues({
       ...formValues,
       respiratorModelNumber: e.target.value.respiratorModelNumber,
@@ -105,7 +103,7 @@ export default function EditQualitativeFitTest(props) {
     getRespiratorManufacturers();
     
   }, []);
-  console.log(formValues)
+
   return(
     <Box>
       <Paper>

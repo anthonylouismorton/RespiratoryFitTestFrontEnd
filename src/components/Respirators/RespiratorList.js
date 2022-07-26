@@ -361,8 +361,8 @@ export default function RespiratorList(props) {
                       <TableCell align="left">{row.respiratorModelNumber}</TableCell>
                       <TableCell align="left">{row.respiratorStyleName}</TableCell>
                       <TableCell align="left">{parseInt(row.respiratorStyleFitFactor)}</TableCell>
-                      <TableCell aligh="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
-                      <TableCell aligh="left">
+                      <TableCell align="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
+                      <TableCell align="left">
                         {showDeleteWarning[0] === false && showDeleteWarning[1] === row.respiratorID ?
                         <>
                         <span>Are you sure?</span>
