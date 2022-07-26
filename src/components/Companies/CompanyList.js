@@ -22,6 +22,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
+import SourceIcon from '@mui/icons-material/Source';
 import { visuallyHidden } from '@mui/utils';
 import axios from 'axios';
 
@@ -105,16 +106,22 @@ const headCells = [
     label: 'Phone Ext',
   },
   {
-    id: 'edit',
-    numeric: true,
+    id: 'view',
+    numeric: false,
     disablePadding: false,
-    label: 'Edit',
+    label: '',
+  },
+  {
+    id: 'edit',
+    numeric: false,
+    disablePadding: false,
+    label: '',
   },
   {
     id: 'delete',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
-    label: 'Delete',
+    label: '',
   },
 
 ];
@@ -287,12 +294,17 @@ export default function CompanyList(props) {
 
   };
 
+  const handleView = (row) => {
+    props.setShowCompanyInformation(true);
+    props.setSelectedCompany(row);
+  };
+
   const handleDeleteClick = async (id) => {
     await axios.delete(`${process.env.REACT_APP_DATABASE}/company/${id}`);
     setShowDeleteWarning(!showDeleteWarning, null)
     getAllCompanies();
 
-  }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -355,7 +367,6 @@ export default function CompanyList(props) {
 
                   return (
                     <TableRow
-                      hover
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -372,14 +383,6 @@ export default function CompanyList(props) {
                           }}
                         />
                       </TableCell>
-                      {/* <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell> */}
                       <TableCell align="left">{row.companyName}</TableCell>
                       <TableCell align="left">{row.address1}</TableCell>
                       <TableCell align="left">{row.city}</TableCell>
@@ -388,8 +391,15 @@ export default function CompanyList(props) {
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.phoneNumber}</TableCell>
                       <TableCell align="left">{row.ext}</TableCell>
-                      <TableCell aligh="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
-                      <TableCell aligh="left">
+                      <TableCell align="left">
+                        <Tooltip title="View Company">
+                          <SourceIcon onClick={() => handleView(row)}/>
+                        </Tooltip>
+                      </TableCell>
+                        <Tooltip title="Edit Company">
+                          <TableCell align="left"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
+                        </Tooltip>
+                      <TableCell align="left">
                         {showDeleteWarning[0] === false && showDeleteWarning[1] === row.companyID ?
                         <>
                         <span>Are you sure?</span>
@@ -397,7 +407,9 @@ export default function CompanyList(props) {
                         <Button variant="contained"  color="error" onClick={handleDeleteWarning}>No</Button>
                         </>
                         :
-                        <DeleteIcon onClick={() => handleDeleteWarning(row.companyID)}/>
+                        <Tooltip title="Delete Company">
+                          <DeleteIcon onClick={() => handleDeleteWarning(row.companyID)}/>
+                        </Tooltip>
                         }
                       </TableCell>
                     </TableRow>

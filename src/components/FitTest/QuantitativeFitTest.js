@@ -35,6 +35,8 @@ export default function QuantitativeFitTest(props) {
     quantitativeOverallFitFactor: '',
     employeeID: props.selectedEmployee.employeeID,
     respiratorID: '',
+    respiratorSize: '',
+    
 	});
   const [selectedManufacturer, setSelectedManufacturer] = useState('');
 	const [selectedModel, setSelectedModel] = useState('');
@@ -95,25 +97,7 @@ export default function QuantitativeFitTest(props) {
 	};
 
   const handleCancel = () => {
-		setFormValues({
-      quantitativeTestID: '',
-      maskType: '',
-      quantitativeOverallTestPass: '',
-      quantitativeTestDate: '',
-      quantitativeTestTime: '',
-      quantitativeTestExpiration: '',
-      quantitativeTest1FitFactor: '',
-      quantitativeTest2FitFactor: '',
-      quantitativeTest3FitFactor: '',
-      quantitativeTest4FitFactor: '',
-      quantitativeTest5FitFactor: '',
-      quantitativeTest6FitFactor: '',
-      quantitativeTest7FitFactor: '',
-      quantitativeTest8FitFactor: '',
-      quantitativeOverallFitFactor: '',
-      employeeID: '',
-      respiratorID: '',
-		});
+		setFormValues([]);
 		props.setShowQuantitativeFitTest(false);
   };
 
@@ -136,25 +120,7 @@ export default function QuantitativeFitTest(props) {
 			formValues,
 		);
 
-		setFormValues({
-      quantitativeTestID: '',
-      maskType: '',
-      quantitativeOverallTestPass: '',
-      quantitativeTestDate: '',
-      quantitativeTestTime: '',
-      quantitativeTestExpiration: '',
-      quantitativeTest1FitFactor: '',
-      quantitativeTest2FitFactor: '',
-      quantitativeTest3FitFactor: '',
-      quantitativeTest4FitFactor: '',
-      quantitativeTest5FitFactor: '',
-      quantitativeTest6FitFactor: '',
-      quantitativeTest7FitFactor: '',
-      quantitativeTest8FitFactor: '',
-      quantitativeOverallFitFactor: '',
-      employeeID: '',
-      respiratorID: '',
-		});
+		setFormValues([]);
 		props.setShowQuantitativeFitTest(false);
   };
 

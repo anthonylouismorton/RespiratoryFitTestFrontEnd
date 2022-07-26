@@ -77,7 +77,7 @@ export default function AddCompanyForm(props) {
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Mask</Typography>
+				<Typography> Add New Company </Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
             <Grid>

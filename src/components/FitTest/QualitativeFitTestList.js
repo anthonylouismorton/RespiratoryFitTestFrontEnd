@@ -350,7 +350,7 @@ export default function QualitativeFitTestList(props) {
                         }
                       </TableCell>
                       <Tooltip title="Archive">
-                      <TableCell aligh="center"><ArchiveIcon/></TableCell>
+                      <TableCell align="center"><ArchiveIcon/></TableCell>
                       </Tooltip>
                     </TableRow>
                   );
