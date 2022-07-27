@@ -28,7 +28,8 @@ export default function EditQualitativeFitTest(props) {
     employeeID: props.selectedFitTest.employeeID,
     respiratorID: props.selectedFitTest.respiratorID,
     respiratorManufacturer: props.selectedFitTest.respiratorManufacturer,
-    respiratorModelNumber: props.selectedFitTest.respiratorModelNumber
+    respiratorModelNumber: props.selectedFitTest.respiratorModelNumber,
+    respiratorSize: props.selectedFitTest.respiratorSize
 	});
   const [selectedManufacturer, setSelectedManufacturer] = useState('');
 	const [selectedModel, setSelectedModel] = useState('');
@@ -188,6 +189,26 @@ export default function EditQualitativeFitTest(props) {
                       {respiratorModels.map((model) => (
                         <MenuItem key={model.respiratorID} value={model}>{model.respiratorModelNumber}</MenuItem>
                       ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+            </Grid>
+            <Grid>
+                <Grid item>
+                  <FormControl fullWidth>
+                    <InputLabel id='demo-simple-select-label'>
+                      Size
+                    </InputLabel>
+                    <Select
+                      name='respiratorSize'
+                      value={formValues.respiratorSize}
+                      label='Size'
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={'Small'}>Small</MenuItem>
+                      <MenuItem value={'Medium'}>Medium</MenuItem>
+                      <MenuItem value={'Large'}>Large</MenuItem>
+                      <MenuItem value={'Regular'}>Regular</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

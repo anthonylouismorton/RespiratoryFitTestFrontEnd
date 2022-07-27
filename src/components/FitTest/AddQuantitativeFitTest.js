@@ -51,12 +51,59 @@ export default function QuantitativeFitTest(props) {
       });
 	};
   
-  const handleFitFactor = (e) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+  const handleFitFactor = async (e) => {
+    let { name, value } = e.target;
+    let total = 0;
+    let values = [formValues.quantitativeTest1FitFactor, formValues.quantitativeTest2FitFactor, formValues.quantitativeTest3FitFactor, formValues.quantitativeTest4FitFactor, formValues.quantitativeTest5FitFactor, formValues.quantitativeTest6FitFactor, formValues.quantitativeTest7FitFactor, formValues.quantitativeTest8FitFactor]
+
+    console.log(name)
+    if(!parseInt(value)){
+      values[name.replace(/\D/g,'')-1] = 0
+      value = 0
+    }
+    if(parseInt(value)){
+      values[name.replace(/\D/g,'')-1] = parseInt(value)
+    }
+
+    let sum = values.reduce(function(pv, cv) { return pv + cv; }, 0)
+    total = Math.round(sum / 8)
+
+    
+      if((formValues.maskType = 'Quarter Mask' || formValues.maskType === 'Half Mask') && total >= 100){
+        setFormValues({
+          ...formValues,
+          quantitativeOverallFitFactor: total,
+          [name]: parseInt(value),
+          quantitativeOverallTestPass: 1
+        });
+      }
+      else if(formValues.maskType === 'Gas Mask' && total >= 2000){
+        console.log('in here')
+        setFormValues({
+          ...formValues,
+          quantitativeOverallFitFactor: total,
+          [name]: parseInt(value),
+          quantitativeOverallTestPass: 1
+        });
+      }
+      else if(formValues.maskType === 'Full Face Mask' >= 500){
+        setFormValues({
+          ...formValues,
+          quantitativeOverallFitFactor: total,
+          [name]: parseInt(value),
+          quantitativeOverallTestPass: 1
+        });
+      }
+      else{
+        if(parseInt){
+          setFormValues({
+            ...formValues,
+            quantitativeOverallFitFactor: total,
+            [name]: parseInt(value),
+            quantitativeOverallTestPass: 0
+          });
+        }
+      };
   };
   
 	const handleModel = (e) => {
@@ -126,33 +173,10 @@ export default function QuantitativeFitTest(props) {
 
   useEffect(()=> {
  
-    let total = 0;
-    if(formValues.quantitativeTest1FitFactor && formValues.quantitativeTest2FitFactor && formValues.quantitativeTest3FitFactor && formValues.quantitativeTest4FitFactor && formValues.quantitativeTest5FitFactor && formValues.quantitativeTest6FitFactor && formValues.quantitativeTest7FitFactor && formValues.quantitativeTest8FitFactor){
-      let sum = Math.round((parseInt(formValues.quantitativeTest1FitFactor) + parseInt(formValues.quantitativeTest2FitFactor) + parseInt(formValues.quantitativeTest3FitFactor) + parseInt(formValues.quantitativeTest4FitFactor) + parseInt(formValues.quantitativeTest5FitFactor) + parseInt(formValues.quantitativeTest6FitFactor) + parseInt(formValues.quantitativeTest7FitFactor) + parseInt(formValues.quantitativeTest8FitFactor)) / 8)
-      total = sum.toString();
-      console.log(total)
-    };
-
-    // if(selectedModel.respiratorStyleID === 501){
-    //   if(parseInt(formValues.quantitativeOverallFitFactor) >= 100){
-    //     setFormValues({
-    //       ...formValues,
-    //       quantitativeOverallFitFactor: total,
-    //       quantitativeOverallTestPass: 1
-    //     });
-    //   }
-    //   else{
-    //     setFormValues({
-    //       ...formValues,
-    //       quantitativeOverallFitFactor: total,
-    //       quantitativeOverallTestPass: 0
-    //     });
-    //   };
-    // };
     getRespiratorManufacturers();
     
-  },[formValues.quantitativeTest1FitFactor, formValues.quantitativeTest2FitFactor, formValues.quantitativeTest3FitFactor, formValues.quantitativeTest4FitFactor, formValues.quantitativeTest5FitFactor, formValues.quantitativeTest6FitFactor, formValues.quantitativeTest7FitFactor, formValues.quantitativeTest8FitFactor]);
-  console.log(formValues)
+  },[]);
+
   return(
   <Box>
     <Paper>
@@ -241,6 +265,26 @@ export default function QuantitativeFitTest(props) {
 								</FormControl>
 							</Grid>
 					</Grid>
+          <Grid>
+                <Grid item>
+                  <FormControl fullWidth>
+                    <InputLabel id='demo-simple-select-label'>
+                      Size
+                    </InputLabel>
+                    <Select
+                      name='respiratorSize'
+                      value={formValues.respiratorSize}
+                      label='Size'
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={'Small'}>Small</MenuItem>
+                      <MenuItem value={'Medium'}>Medium</MenuItem>
+                      <MenuItem value={'Large'}>Large</MenuItem>
+                      <MenuItem value={'Regular'}>Regular</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+          </Grid>
           <Grid>
 							<Grid item>
                 <FormControl fullWidth>
