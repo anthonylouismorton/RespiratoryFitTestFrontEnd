@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CompanyEmployeeList from './CompanyEmployeeList';
-import QualitativeFitTest from './QualitativeFitTest';
-import QuantitativeFitTest from './QuantitativeFitTest';
+import AddQualitativeFitTest from './AddQualitativeFitTest';
+import AddQuantitativeFitTest from './AddQuantitativeFitTest';
 import QuantitativeFitTestList from './QuantitativeFitTestList';
 import QualitativeFitTestList from './QualitativeFitTestList';
 import EditQuantitativeFitTest from './EditQuantitativeFitTest';
@@ -73,7 +73,9 @@ export default function SearchEmployee() {
       setCompanyEmployeeList(companyEmployees.data);
     };
     if(formValues.ssn){
+      console.log('in here')
       let employee = await axios.get (`${process.env.REACT_APP_DATABASE}/employeeBySSN/${formValues.ssn}`)
+      console.log(employee)
       let employeeSSN = Number(String(employee.data.ssn).slice(-4))
       setSelectedEmployee(
         {
@@ -227,10 +229,10 @@ export default function SearchEmployee() {
     }
     <>
     {showQualitativeFitTest &&
-    <QualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQualitativeFitTest={setShowQualitativeFitTest}/>
+    <AddQualitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQualitativeFitTest={setShowQualitativeFitTest}/>
     }
     {showQuantitativeFitTest &&
-    <QuantitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQuantitativeFitTest={setShowQuantitativeFitTest}/>
+    <AddQuantitativeFitTest selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowQuantitativeFitTest={setShowQuantitativeFitTest}/>
     }
     {showFitTests && !showQuantitativeFitTest && !showQuantitativeFitTestEdit && !showQualitativeFitTestEdit && !showQualitativeFitTest &&
     <QuantitativeFitTestList selectedEmployee={selectedEmployee} setSelectedFitTest={setSelectedFitTest} selectedFitTest={selectedFitTest} setShowQuantitativeFitTestEdit={setShowQuantitativeFitTestEdit}/>

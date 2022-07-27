@@ -27,6 +27,7 @@ export default function QualitativeFitTest(props) {
 		qualitativeTestExpiration: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
     employeeID: props.selectedEmployee.employeeID,
     respiratorID: '',
+		respiratorSize: ''
 	});
   const [selectedManufacturer, setSelectedManufacturer] = useState('');
 	const [selectedModel, setSelectedModel] = useState('');
@@ -65,17 +66,7 @@ export default function QualitativeFitTest(props) {
 	};
 
   const handleCancel = () => {
-		setFormValues({
-      qualitativeTestID: '',
-      qualitativeTestType: '',
-      qualitativeTasteThreshold: '',
-      qualitativeTestPass: '',
-      qualitativeTestDate: '',
-      qualitativeTestTime: '',
-      qualitativeTestExpiration: '',
-      employeeID: '',
-      respiratorID: '',
-		});
+		setFormValues([]);
 		props.setShowQualitativeFitTest(false);
   };
 
@@ -98,24 +89,14 @@ export default function QualitativeFitTest(props) {
 			formValues,
 		);
 
-		setFormValues({
-      qualitativeTestID: '',
-      qualitativeTestType: '',
-      qualitativeTasteThreshold: '',
-      qualitativeTestPass: '',
-      qualitativeTestDate: '',
-      qualitativeTestTime: '',
-      qualitativeTestExpiration: '',
-      employeeID: '',
-      respiratorID: '',
-		});
+		setFormValues([]);
 		props.setShowQualitativeFitTest(false);
   };
 
   useEffect(()=> {
     getRespiratorManufacturers();
   },[]);
-
+	console.log(formValues)
   return(
   <Box>
     <Paper>
@@ -204,6 +185,26 @@ export default function QualitativeFitTest(props) {
 								</FormControl>
 							</Grid>
 					</Grid>
+					<Grid>
+                <Grid item>
+                  <FormControl fullWidth>
+                    <InputLabel id='demo-simple-select-label'>
+                      Size
+                    </InputLabel>
+                    <Select
+                      name='respiratorSize'
+                      value={formValues.respiratorSize}
+                      label='Size'
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={'Small'}>Small</MenuItem>
+                      <MenuItem value={'Medium'}>Medium</MenuItem>
+                      <MenuItem value={'Large'}>Large</MenuItem>
+                      <MenuItem value={'Regular'}>Regular</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+          </Grid>
           <Grid>
 							<Grid item>
 								<FormControl fullWidth>

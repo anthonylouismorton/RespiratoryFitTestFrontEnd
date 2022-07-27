@@ -91,6 +91,12 @@ const headCells = [
     label: 'Model',
   },
   {
+    id: 'respiratorSize',
+    numeric: false,
+    disablePadding: false,
+    label: 'Size',
+  },
+  {
     id: 'edit',
     numeric: false,
     disablePadding: false,
@@ -279,7 +285,7 @@ export default function QualitativeFitTestList(props) {
   
   useEffect(()=> {
     getAllFitTests();
-  });
+  }, []);
  
   return (
     <Box sx={{ width: '100%' }}>
@@ -333,6 +339,7 @@ export default function QualitativeFitTestList(props) {
                       <TableCell align="left">{row.qualitativeTasteThreshold}</TableCell>
                       <TableCell align="left">{row.respiratorManufacturer}</TableCell>
                       <TableCell align="left">{row.respiratorModelNumber}</TableCell> 
+                      <TableCell align="left">{row.respiratorSize}</TableCell> 
                       <Tooltip title="Edit">
                       <TableCell align="center"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
                       </Tooltip>

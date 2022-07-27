@@ -85,6 +85,12 @@ const headCells = [
     label: 'Model',
   },
   {
+    id: 'respiratorSize',
+    numeric: false,
+    disablePadding: false,
+    label: 'Size',
+  },
+  {
     id: 'edit',
     numeric: false,
     disablePadding: false,
@@ -327,6 +333,7 @@ export default function QuantitativeFitTestList(props) {
                       <TableCell align="left">{row.quantitativeOverallFitFactor}</TableCell>
                       <TableCell align="left">{row.respiratorManufacturer}</TableCell>
                       <TableCell align="left">{row.respiratorModelNumber}</TableCell>
+                      <TableCell align="left">{row.respiratorSize}</TableCell>
                       <Tooltip title="Edit">
                       <TableCell align="center"><EditIcon onClick={() => handleEdit(row)}/></TableCell>
                       </Tooltip>
