@@ -218,7 +218,6 @@ export default function CompanyEmployeeList(props) {
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [showDeleteWarning, setShowDeleteWarning] = useState([false, null]);
 
@@ -289,10 +288,6 @@ export default function CompanyEmployeeList(props) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -316,7 +311,7 @@ export default function CompanyEmployeeList(props) {
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={'medium'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -377,7 +372,7 @@ export default function CompanyEmployeeList(props) {
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: (53) * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -396,10 +391,6 @@ export default function CompanyEmployeeList(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 };

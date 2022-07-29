@@ -56,7 +56,6 @@ export default function QuantitativeFitTest(props) {
     let total = 0;
     let values = [formValues.quantitativeTest1FitFactor, formValues.quantitativeTest2FitFactor, formValues.quantitativeTest3FitFactor, formValues.quantitativeTest4FitFactor, formValues.quantitativeTest5FitFactor, formValues.quantitativeTest6FitFactor, formValues.quantitativeTest7FitFactor, formValues.quantitativeTest8FitFactor]
 
-    console.log(name)
     if(!parseInt(value)){
       values[name.replace(/\D/g,'')-1] = 0
       value = 0
@@ -86,7 +85,7 @@ export default function QuantitativeFitTest(props) {
           quantitativeOverallTestPass: 1
         });
       }
-      else if(formValues.maskType === 'Full Face Mask' >= 500){
+      else if(formValues.maskType === 'Full Face Mask' && total >= 500){
         setFormValues({
           ...formValues,
           quantitativeOverallFitFactor: total,
@@ -95,14 +94,12 @@ export default function QuantitativeFitTest(props) {
         });
       }
       else{
-        if(parseInt){
-          setFormValues({
-            ...formValues,
-            quantitativeOverallFitFactor: total,
-            [name]: parseInt(value),
-            quantitativeOverallTestPass: 0
-          });
-        }
+        setFormValues({
+          ...formValues,
+          quantitativeOverallFitFactor: total,
+          [name]: parseInt(value),
+          quantitativeOverallTestPass: 0
+        });
       };
   };
   
@@ -146,6 +143,8 @@ export default function QuantitativeFitTest(props) {
   const handleCancel = () => {
 		setFormValues([]);
 		props.setShowQuantitativeFitTest(false);
+    props.setShowEmployee(true);
+    props.setShowFitTests(true);
   };
 
   const handleManufacturer = async (manufacturer) => {
@@ -169,6 +168,8 @@ export default function QuantitativeFitTest(props) {
 
 		setFormValues([]);
 		props.setShowQuantitativeFitTest(false);
+    props.setShowEmployee(true);
+    props.setShowFitTests(true);
   };
 
   useEffect(()=> {

@@ -18,7 +18,7 @@ return (
 	<>
 	<Stack spacing={2} direction="row">
 		{hideAddEmployeeForm === true && hideEmployeeEdit === true &&
-		<Button variant="contained" onClick={handleClick}>Add New Employee</Button>
+		<Button variant="contained" onClick={handleClick}>New Employee</Button>
 		}
 	</Stack>
 	{hideEmployeeEdit === true && hideAddEmployeeForm === true &&

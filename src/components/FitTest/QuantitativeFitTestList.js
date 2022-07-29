@@ -15,8 +15,6 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -194,7 +192,6 @@ export default function QuantitativeFitTestList(props) {
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [showDeleteWarning, setShowDeleteWarning] = useState([false, null]);
 
@@ -234,13 +231,14 @@ export default function QuantitativeFitTestList(props) {
   };
 
   const handleDeleteWarning = (id) => {
-    setShowDeleteWarning([!showDeleteWarning, id])
-
+    setShowDeleteWarning([!showDeleteWarning, id]);
   };
 
   const handleEdit = (row) => {
-    props.setSelectedFitTest(row)
-    props.setShowQuantitativeFitTestEdit(true)
+    props.setSelectedFitTest(row);
+    props.setShowQuantitativeFitTestEdit(true);
+    props.setShowEmployee(false);
+    props.setShowFitTests(false);
   };
 
   const handleDeleteClick = async (id) => {
@@ -261,10 +259,6 @@ export default function QuantitativeFitTestList(props) {
     }
     setRowsPerPage(parseInt(rowSelection, 10));
     setPage(0);
-  };
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -290,7 +284,7 @@ export default function QuantitativeFitTestList(props) {
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={'medium'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -359,7 +353,7 @@ export default function QuantitativeFitTestList(props) {
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: (53) * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -378,10 +372,6 @@ export default function QuantitativeFitTestList(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }
