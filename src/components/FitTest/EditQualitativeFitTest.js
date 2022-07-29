@@ -70,6 +70,8 @@ export default function EditQualitativeFitTest(props) {
   const handleCancel = () => {
 		setFormValues([]);
 		props.setShowQualitativeFitTestEdit(false);
+    props.setShowEmployee(true);
+    props.setShowFitTests(true);
   };
 
   const handleManufacturer = async (manufacturer) => {
@@ -98,6 +100,8 @@ export default function EditQualitativeFitTest(props) {
 
 		setFormValues([]);
 		props.setShowQualitativeFitTestEdit(false);
+    props.setShowEmployee(true);
+    props.setShowFitTests(true);
   };
 
   useEffect(()=> {

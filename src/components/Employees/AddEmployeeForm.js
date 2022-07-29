@@ -300,7 +300,7 @@ export default function AddCompanyForm(props) {
 						</Grid>
 						<Grid item>
 							<Button type='submit' color='success' variant='contained'>
-								Add Company
+								Submit
 							</Button>
 							<Button onClick={handleCancel} color='error' variant='contained'>
 								Cancel

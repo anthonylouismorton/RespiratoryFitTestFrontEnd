@@ -116,7 +116,7 @@ export default function EmployeeEditForm(props) {
 	return (
 		<Box>
 			<Paper>
-				<Typography>Add New Mask</Typography>
+				<Typography>Edit {formValues.firstName} {formValues.lastName}</Typography>
 				<Grid>
 					<form onSubmit={onSubmit}>
 						<Grid>

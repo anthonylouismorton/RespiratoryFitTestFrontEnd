@@ -68,6 +68,8 @@ export default function QualitativeFitTest(props) {
   const handleCancel = () => {
 		setFormValues([]);
 		props.setShowQualitativeFitTest(false);
+		props.setShowEmployee(true);
+    props.setShowFitTests(true);
   };
 
   const handleManufacturer = async (manufacturer) => {
@@ -91,12 +93,14 @@ export default function QualitativeFitTest(props) {
 
 		setFormValues([]);
 		props.setShowQualitativeFitTest(false);
+		props.setShowEmployee(true);
+    props.setShowFitTests(true);
   };
 
   useEffect(()=> {
     getRespiratorManufacturers();
   },[]);
-	console.log(formValues)
+
   return(
   <Box>
     <Paper>
