@@ -32,15 +32,15 @@ export default function SearchEmployee() {
     setShowEmployee(false);
     setShowFitTests(false)
   };
-  console.log(showEmployee)
+  console.log(selectedEmployee)
 
 	return (
     <Box>
     {showEmployeeSearch &&
-    <EmployeeSearchForm setSelectedEmployee={setSelectedEmployee} setShowFitTests={setShowFitTests} setShowEmployee={setShowEmployee} setShowEmployeeSearch={setShowEmployeeSearch}/>
+    <EmployeeSearchForm setSelectedEmployee={setSelectedEmployee} setShowFitTests={setShowFitTests} setShowEmployee={setShowEmployee} setShowEmployeeSearch={setShowEmployeeSearch} setCompanyEmployeeList={setCompanyEmployeeList} setShowCompanyList={setShowCompanyList}/>
     }
     {showCompanyList &&
-    <CompanyEmployeeList companyEmployeeList={companyEmployeeList} setCompanyEmployeeList={setCompanyEmployeeList} selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowCompanyList={setShowCompanyList}/>
+    <CompanyEmployeeList companyEmployeeList={companyEmployeeList} setCompanyEmployeeList={setCompanyEmployeeList} selectedEmployee={selectedEmployee} setSelectedEmployee={setSelectedEmployee} setShowCompanyList={setShowCompanyList} setShowFitTests={setShowFitTests} setShowEmployee={setShowEmployee} setShowEmployeeSearch={setShowEmployeeSearch}/>
     }
     {showEmployee &&
     <>

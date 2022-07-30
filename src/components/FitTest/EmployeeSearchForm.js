@@ -48,6 +48,8 @@ const handleChange = (e) => {
     if(formValues.companyID){
       let companyEmployees = await axios.get (`${process.env.REACT_APP_DATABASE}/companyEmployee/${formValues.companyID}`)
       props.setCompanyEmployeeList(companyEmployees.data);
+      props.setShowCompanyList(true);
+      props.setShowEmployeeSearch(false);
     };
     
     if(formValues.ssn){
