@@ -52,22 +52,7 @@ export default function AddCompanyForm(props) {
 	};
 
 	const handleCancel = () => {
-		setFormValues({
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      dob: '',
-      ssn: '',
-      address1: '',
-      address2: '',
-      address3: '',
-      city: '',
-      state: '',
-      zip: '',
-      employeeEmail: '',
-      employeePhoneNumber: '',
-      companyID: ''
-		});
+		setFormValues([]);
 		props.setHideAddEmployeeForm(true);
   };
 
@@ -78,22 +63,7 @@ export default function AddCompanyForm(props) {
 			formValues,
 		);
 
-		setFormValues({
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      dob: '',
-      ssn: '',
-      address1: '',
-      address2: '',
-      address3: '',
-      city: '',
-      state: '',
-      zip: '',
-      employeeEmail: '',
-      employeePhoneNumber: '',
-      companyID: ''
-		});
+		setFormValues([]);
 		props.setHideAddEmployeeForm(true);
 	};
 
