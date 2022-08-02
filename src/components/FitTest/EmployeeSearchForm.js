@@ -23,7 +23,7 @@ const [formValues, setFormValues] = useState({
   companyID: ''
 });
 const [errorText,setErrorText] = useState('');
-const [error, setError] = useState('')
+const [error, setError] = useState('');
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -91,16 +91,6 @@ const handleChange = (e) => {
           props.setShowEmployee(true);
       };
     };
-    errorCheck();
-  };
-
-const errorCheck = () => {
-  if(!formValues.lastName && !formValues.ssn && !formValues.companyID){
-    setErrorText('*You must enter a valid search criteria')
-    setError(
-      'No Value'
-    );
-  };
 };
 
 const getAllCompanies = async () =>{
