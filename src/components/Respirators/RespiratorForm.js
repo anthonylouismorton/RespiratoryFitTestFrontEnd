@@ -11,11 +11,14 @@ import {
 	MenuItem,
 	Box,
 	Typography,
+	FormHelperText
 } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 export default function RespiratorForm(props) {
 	const filter = createFilterOptions();
+	const [errorText,setErrorText] = useState('');
+	const [error, setError] = useState('');
 
 	const [formValues, setFormValues] = useState({
     respiratorManufacturer: '',
@@ -34,27 +37,41 @@ export default function RespiratorForm(props) {
 	};
 
 	const handleCancel = () => {
-		setFormValues({
-			respiratorManufacturer: '',
-			respiratorStyleID: '',
-			respiratorModelNumber: ''
-		});
+		setFormValues([]);
+		setErrorText('');
+		setError('');
 		props.setHideMaskForm(true);
   };
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await axios.post(
-			`${process.env.REACT_APP_DATABASE}/respirator`,
-			formValues,
-		);
-
-		setFormValues({
-			respiratorManufacturer: '',
-			respiratorStyleID: '',
-			respiratorModelNumber: ''
-		});
-		props.setHideMaskForm(true);
+		if(!formValues.respiratorManufacturer){
+			setErrorText('*You must select a respirator manufacturer')
+			setError(
+				'manufacturer'
+			);
+		}
+		if(!formValues.respiratorModelNumber){
+			setErrorText('*You must provide a model')
+			setError(
+				'model'
+			);
+		}
+		if(!formValues.respiratorStyleID){
+			setErrorText('*You must select a respirator style')
+			setError(
+				'style'
+			);
+		}
+		if(formValues.respiratorStyleID && formValues.respiratorModelNumber && formValues.respiratorManufacturer){
+			await axios.post(
+				`${process.env.REACT_APP_DATABASE}/respirator`,
+				formValues,
+			);
+	
+			setFormValues([]);
+			props.setHideMaskForm(true);
+		};
 	};
 
   const getRespiratorModels = async () =>{
@@ -74,7 +91,9 @@ export default function RespiratorForm(props) {
 					<form onSubmit={onSubmit}>
 						<Grid>
 							<Grid item>
-                <FormControl fullWidth>
+                <FormControl
+								 fullWidth
+								>
 									<Autocomplete
 										value={formValues.respiratorManufacturer}
 										onChange={(event, newValue) => {
@@ -138,7 +157,11 @@ export default function RespiratorForm(props) {
 										sx={{ width: 300 }}
 										freeSolo
 										renderInput={(params) => (
-											<TextField {...params} label="Manufacturer" />
+											<TextField 
+												error={error === 'manufacturer'? true : false}
+												helperText={error === 'manufacturer'? errorText : ''} 
+												{...params} 
+												label="Manufacturer" />
 										)}
 									/>
                 </FormControl>
@@ -146,18 +169,23 @@ export default function RespiratorForm(props) {
 						</Grid>
 						<Grid>
 							<Grid item>
-								<TextField
-									name='respiratorModelNumber'
-									id='outlined-multiline-static'
-									label='Model'
-									rows={1}
-									onChange={handleChange}
-								/>
+									<TextField
+										error={error === 'model'? true : false}
+										helperText={error === 'model'? errorText : ''}
+										name='respiratorModelNumber'
+										id='outlined-multiline-static'
+										label='Model'
+										rows={1}
+										onChange={handleChange}
+									/>
 							</Grid>
 						</Grid>
             <Grid>
 							<Grid item>
-								<FormControl fullWidth>
+								<FormControl 
+									fullWidth 
+									error={error === 'style'? true : false}
+								>
 									<InputLabel id='demo-simple-select-label'>
 										Style
 									</InputLabel>
@@ -172,6 +200,9 @@ export default function RespiratorForm(props) {
 										<MenuItem value={502}>Full Face Mask</MenuItem>
 										<MenuItem value={500}>Gas Mask</MenuItem>
 									</Select>
+									{error === 'style' &&
+									<FormHelperText>{errorText}</FormHelperText>
+									}
 								</FormControl>
 							</Grid>
 						</Grid>
